@@ -1,0 +1,94 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bayesian-fyf"
+version = "0.1.0"
+description = "Bayesian forecasting for periodic budget revisions — companion code for the article 'The Budget That Learns'."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+  { name = "Bruno Ramos Martins", email = "brunoramosmartins1989@gmail.com" }
+]
+keywords = [
+  "bayesian-inference",
+  "conjugate-priors",
+  "forecasting",
+  "budgeting",
+  "fyf",
+  "portfolio",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Mathematics",
+]
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "pandas>=2.1",
+  "matplotlib>=3.8",
+  "seaborn>=0.13",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.4",
+]
+notebook = [
+  "jupyter>=1.0",
+  "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/brunoramosmartins/bayesian-fyf-article"
+Repository = "https://github.com/brunoramosmartins/bayesian-fyf-article"
+Issues = "https://github.com/brunoramosmartins/bayesian-fyf-article/issues"
+
+[tool.setuptools]
+packages = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = [
+  "notebooks",
+  "figures",
+  ".claude",
+]
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # isort
+  "B",    # flake8-bugbear
+  "UP",   # pyupgrade
+  "NPY",  # numpy-specific
+  "RUF",  # ruff-specific
+]
+ignore = [
+  "E501",  # line length is enforced softly via formatter; allow long math comments
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B", "RUF"]
+"scripts/*" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
