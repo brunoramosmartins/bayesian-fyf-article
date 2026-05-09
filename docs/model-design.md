@@ -118,7 +118,7 @@ $\sigma_0$:
 $$
 \mu_0 \pm 1.645\,\sigma_0 \;=\; \mu_0 \,(1 \pm 0.15)
 \;\Longrightarrow\;
-\sigma_0 \;=\; \frac{0.15 \,\mu_0}{1.645} \;\approx\; \text{R\$ 95{,}744}.
+\sigma_0 \;=\; \frac{0.15 \,\mu_0}{1.6449} \;\approx\; \text{R\$ 95{,}753}.
 $$
 
 The roadmap rounds this to R$ 150{,}000 for round numbers and a slightly
