@@ -37,15 +37,15 @@ not analogy; it is identity. And recognising the identity turns three
 qualitative pain-points into closed-form results:
 
 1. *How do I weight the plan against the data?* — The
-   **precision-weighted mean** of the Normal–Normal posterior. The
-   weights are not a matter of judgement: they are functions of the
-   stated prior uncertainty and the per-month observation noise.
+ **precision-weighted mean** of the Normal–Normal posterior. The
+ weights are not a matter of judgement: they are functions of the
+ stated prior uncertainty and the per-month observation noise.
 2. *How tight is my forecast?* — The posterior variance shrinks
-   monotonically with each new month. Phase 3 will make this
-   "monotonically" both rigorous and quantitative.
+ monotonically with each new month. Phase 3 will make this
+ "monotonically" both rigorous and quantitative.
 3. *What is the probability of ending the year over budget?* — The
-   posterior **predictive** distribution applied to the unobserved
-   months gives an exact closed form, not a heuristic.
+ posterior **predictive** distribution applied to the unobserved
+ months gives an exact closed form, not a heuristic.
 
 The route from claim to proof is short. Section 2 derives Bayes'
 theorem for continuous parameters and clarifies the difference
@@ -88,7 +88,7 @@ both treated as random variables. The **product rule for densities**
 factorises the joint two ways:
 
 $$
-f(x, \theta) \;=\; f(x \mid \theta)\,\pi(\theta) \;=\; \pi(\theta \mid x)\,f(x).
+f(x, \theta) = f(x \mid \theta) \pi(\theta) = \pi(\theta \mid x) f(x).
 $$
 
 Equating and solving for the second factor gives **Bayes' theorem
@@ -96,9 +96,9 @@ for continuous parameters**:
 
 $$
 \boxed{\quad
-\pi(\theta \mid x) \;=\; \frac{f(x \mid \theta)\,\pi(\theta)}{f(x)},
+\pi(\theta \mid x) = \frac{f(x \mid \theta) \pi(\theta)}{f(x)},
 \qquad
-f(x) \;=\; \int f(x \mid \theta)\,\pi(\theta)\,\mathrm d\theta.
+f(x) = \int f(x \mid \theta) \pi(\theta) \mathrm d\theta.
 \quad}
 $$
 
@@ -110,7 +110,7 @@ or evidence — the probability of the data averaged over the prior.
 $\pi(\theta \mid x)$ is the **posterior**: the revised forecast.
 
 Because $f(x)$ does not involve $\theta$, the proportional form
-$\pi(\theta \mid x) \propto f(x \mid \theta)\,\pi(\theta)$ is
+$\pi(\theta \mid x) \propto f(x \mid \theta) \pi(\theta)$ is
 operationally enough. In conjugate families (§3) we recognise the
 kernel of the right-hand side as that of a known distribution and
 read off the hyperparameters; the marginal likelihood is implied by
@@ -164,12 +164,12 @@ truth is within $\pm w$" is implicitly specifying a Normal prior
 $N(\mu_0, \sigma_0^2)$ with
 
 $$
-\sigma_0 \;=\; \frac{w}{z_{(1+\gamma)/2}},
+\sigma_0 = \frac{w}{z_{(1+\gamma)/2}},
 $$
 
 where $z_q$ is the standard-Normal quantile. The article's reference
-scenario uses $\mu_0 = \text{R\$ 1{,}050{,}000}$,
-$\sigma_0 = \text{R\$ 150{,}000}$ — a budget plan and a stated
+scenario uses $\mu_0$ = R\$ 1,050,000,
+$\sigma_0$ = R\$ 150,000 — a budget plan and a stated
 uncertainty, translated into a prior in one line.
 
 ---
@@ -197,13 +197,13 @@ $$
 
 The likelihood, viewed as a function of $\theta$ and after expanding
 $\sum (x_i - \theta)^2 = \sum (x_i - \bar x)^2 + n(\bar x - \theta)^2$,
-is proportional to $\exp\!\big(-\tfrac{n}{2\sigma^2}(\theta - \bar x)^2\big)$.
+is proportional to $\exp\big(-\tfrac{n}{2\sigma^2}(\theta - \bar x)^2\big)$.
 Multiplying by the prior, grouping powers of $\theta$, and completing
 the square yields a Normal kernel with
 
 $$
 \boxed{\quad
-\theta \mid x_{1:n} \;\sim\; N(\mu_n, \sigma_n^2),
+\theta \mid x_{1:n} \sim N(\mu_n, \sigma_n^2),
 \qquad
 \tau_n = \tau_0 + n\tau,
 \qquad
@@ -216,9 +216,9 @@ the **precisions** (inverse variances). Equivalently, in variance
 form,
 
 $$
-\mu_n \;=\; \frac{\sigma^2 \mu_0 + n \sigma_0^2 \bar x}{\sigma^2 + n \sigma_0^2},
+\mu_n = \frac{\sigma^2 \mu_0 + n \sigma_0^2 \bar x}{\sigma^2 + n \sigma_0^2},
 \qquad
-\sigma_n^2 \;=\; \frac{\sigma^2 \sigma_0^2}{\sigma^2 + n \sigma_0^2}.
+\sigma_n^2 = \frac{\sigma^2 \sigma_0^2}{\sigma^2 + n \sigma_0^2}.
 $$
 
 This identity admits three equivalent readings.
@@ -252,7 +252,7 @@ $$
 $$
 
 $$
-\beta_n = \beta_0 + \tfrac{1}{2} S + \tfrac{1}{2}\,\frac{\kappa_0 n}{\kappa_0 + n}\,(\bar x - \mu_0)^2,
+\beta_n = \beta_0 + \tfrac{1}{2} S + \tfrac{1}{2} \frac{\kappa_0 n}{\kappa_0 + n} (\bar x - \mu_0)^2,
 \quad S = \sum_{i=1}^n (x_i - \bar x)^2.
 $$
 
@@ -270,7 +270,7 @@ parameterisation), the posterior is
 
 $$
 \boxed{\quad
-\lambda \mid x_{1:n} \;\sim\; \text{Gamma}\!\Big(\alpha_0 + \textstyle\sum_i x_i,\; \beta_0 + n\Big).
+\lambda \mid x_{1:n} \sim \text{Gamma}\Big(\alpha_0 + \textstyle\sum_i x_i, \beta_0 + n\Big).
 \quad}
 $$
 
@@ -285,7 +285,7 @@ and observation $x \mid p \sim \text{Binomial}(n, p)$,
 
 $$
 \boxed{\quad
-p \mid x \;\sim\; \text{Beta}(\alpha_0 + x,\; \beta_0 + n - x).
+p \mid x \sim \text{Beta}(\alpha_0 + x, \beta_0 + n - x).
 \quad}
 $$
 
@@ -332,25 +332,25 @@ would have obtained had they waited and done one big update.
 The Normal–Normal posterior mean is the convex combination
 
 $$
-\mu_n \;=\; w_0(n)\,\mu_0 + (1 - w_0(n))\,\bar x_n,
+\mu_n = w_0(n) \mu_0 + (1 - w_0(n)) \bar x_n,
 \qquad
-w_0(n) \;=\; \frac{\tau_0}{\tau_0 + n\tau} \;=\; \frac{\sigma^2/\sigma_0^2}{\sigma^2/\sigma_0^2 + n}.
+w_0(n) = \frac{\tau_0}{\tau_0 + n\tau} = \frac{\sigma^2/\sigma_0^2}{\sigma^2/\sigma_0^2 + n}.
 $$
 
 Three consequences follow immediately:
 
 - **Shrinkage weight decays as $1/n$**. $w_0(n) = \Theta(1/n)$, with
-  leading constant $\sigma^2/\sigma_0^2$.
+ leading constant $\sigma^2/\sigma_0^2$.
 - **Posterior variance decays as $1/n$**. $\sigma_n^2 = 1/(\tau_0 + n\tau) \sim \sigma^2/n$,
-  matching the frequentist sampling variance of $\bar X_n$
-  asymptotically.
+ matching the frequentist sampling variance of $\bar X_n$
+ asymptotically.
 - **Posterior mean converges to the data mean**.
-  $\mu_n - \bar x_n = w_0(n)(\mu_0 - \bar x_n) \to 0$.
+ $\mu_n - \bar x_n = w_0(n)(\mu_0 - \bar x_n) \to 0$.
 
 The recursive **Kalman-gain** form
 
 $$
-\mu_n \;=\; \mu_{n-1} + K_n(x_n - \mu_{n-1}),
+\mu_n = \mu_{n-1} + K_n(x_n - \mu_{n-1}),
 \qquad
 K_n = \frac{\sigma_{n-1}^2}{\sigma_{n-1}^2 + \sigma^2}
 $$
@@ -369,10 +369,10 @@ the ratio $\sigma^2/\sigma_0^2 \approx 0.2844$:
 
 | Month $n$ | $w_0(n)$ | $1 - w_0(n)$ |
 |----------:|---------:|-------------:|
-| 1         | 0.2215   | 0.7785       |
-| 3         | 0.0866   | 0.9134       |
-| 6         | 0.0453   | 0.9547       |
-| 12        | 0.0232   | 0.9768       |
+| 1 | 0.2215 | 0.7785 |
+| 3 | 0.0866 | 0.9134 |
+| 6 | 0.0453 | 0.9547 |
+| 12 | 0.0232 | 0.9768 |
 
 The data's share crosses **80 % at $n = 2$** (already by February
 with monthly revisions), **95 % at $n = 6$** (mid-year FYF). By the
@@ -386,7 +386,7 @@ $\mu_0^{(A)} \ne \mu_0^{(B)}$ produce posteriors whose disagreement
 shrinks at exactly $w_0(n)$:
 
 $$
-\big|\mu_n^{(A)} - \mu_n^{(B)}\big| \;=\; w_0(n) \cdot \big|\mu_0^{(A)} - \mu_0^{(B)}\big|.
+\big|\mu_n^{(A)} - \mu_n^{(B)}\big| = w_0(n) \cdot \big|\mu_0^{(A)} - \mu_0^{(B)}\big|.
 $$
 
 By month 6, an initial gap of R\$ 150{,}000 has shrunk to ≈ R\$ 6{,}780.
@@ -421,7 +421,7 @@ will next month cost? what will the year-end total cost?".
 
 $$
 \boxed{\quad
-p(\tilde x \mid x) \;=\; \int f(\tilde x \mid \theta)\,\pi(\theta \mid x)\,\mathrm d\theta.
+p(\tilde x \mid x) = \int f(\tilde x \mid \theta) \pi(\theta \mid x) \mathrm d\theta.
 \quad}
 $$
 
@@ -429,10 +429,10 @@ The predictive variance decomposes via the **law of total variance**:
 
 $$
 \mathrm{Var}(\tilde x \mid x)
-\;=\;
-\underbrace{\mathbb E\!\big[\mathrm{Var}(\tilde x \mid \theta) \mid x\big]}_{\text{expected sampling noise}}
-\;+\;
-\underbrace{\mathrm{Var}\!\big(\mathbb E[\tilde x \mid \theta] \mid x\big)}_{\text{parameter uncertainty}}.
+ = 
+\underbrace{\mathbb E\big[\mathrm{Var}(\tilde x \mid \theta) \mid x\big]}_{\text{expected sampling noise}}
+ + 
+\underbrace{\mathrm{Var}\big(\mathbb E[\tilde x \mid \theta] \mid x\big)}_{\text{parameter uncertainty}}.
 $$
 
 The first term is **irreducible noise**. The second term shrinks
@@ -450,11 +450,11 @@ For the three pairs the article uses operationally:
 
 - **Normal–Normal**: $\tilde x \mid x \sim N(\mu_n, \sigma_n^2 + \sigma^2)$.
 - **Gamma–Poisson**: $\tilde x \mid x \sim \text{NegBin}(\alpha_n, \beta_n/(\beta_n+1))$,
-  shape–success parameterisation. Predictive mean $\alpha_n/\beta_n$,
-  variance $\alpha_n(\beta_n+1)/\beta_n^2 > \alpha_n/\beta_n$ —
-  **overdispersion** induced by parameter uncertainty.
+ shape–success parameterisation. Predictive mean $\alpha_n/\beta_n$,
+ variance $\alpha_n(\beta_n+1)/\beta_n^2 > \alpha_n/\beta_n$ —
+ **overdispersion** induced by parameter uncertainty.
 - **Beta–Binomial**: future batch of size $m$ has predictive PMF
-  $\Pr(\tilde x = k) = \binom{m}{k} B(\alpha_n + k, \beta_n + m - k)/B(\alpha_n, \beta_n)$.
+ $\Pr(\tilde x = k) = \binom{m}{k} B(\alpha_n + k, \beta_n + m - k)/B(\alpha_n, \beta_n)$.
 
 ### 5.3 The year-end total — beware of independence
 
@@ -470,7 +470,7 @@ independent given $x_{1:m}$; their variances add:
 
 $$
 \boxed{\quad
-\tilde S \mid x_{1:m} \;\sim\; N\!\big((12-m)\,\mu_m,\;\; (12-m)^2\,\sigma_m^2 \;+\; (12-m)\,\sigma^2\big).
+\tilde S \mid x_{1:m} \sim N\big((12-m) \mu_m, (12-m)^2 \sigma_m^2 + (12-m) \sigma^2\big).
 \quad}
 $$
 
@@ -485,14 +485,14 @@ $S_m + (12-m)\mu_m$ and the variance above. Then
 
 $$
 P(T > B \mid x_{1:m})
-\;=\;
-1 - \Phi\!\Big(\frac{B - (S_m + (12-m)\mu_m)}{\sqrt{(12-m)^2 \sigma_m^2 + (12-m)\sigma^2}}\Big).
+ = 
+1 - \Phi\Big(\frac{B - (S_m + (12-m)\mu_m)}{\sqrt{(12-m)^2 \sigma_m^2 + (12-m)\sigma^2}}\Big).
 $$
 
 For the reference scenario at mid-year with
-$\mu_6 = \text{R\$ 1{,}085{,}000}$,
-$\sigma_6 = \text{R\$ 32{,}000}$,
-$S_6 = \text{R\$ 6{,}510{,}000}$, $B = \text{R\$ 13{,}200{,}000}$:
+$\mu_6$ = R\$ 1,085,000,
+$\sigma_6$ = R\$ 32,000,
+$S_6$ = R\$ 6,510,000, $B$ = R\$ 13,200,000:
 $P(T > B) \approx 26\%$ under the correct formula, vs ≈ 20 % under
 the naïve iid calculation. **The dependence between future months
 is not a rounding error.**
@@ -503,7 +503,7 @@ The closed forms are convenient, but the Monte Carlo recipe works
 in any setting:
 
 1. Draw $\theta^{(s)} \sim \pi(\theta \mid x)$.
-2. Draw $\tilde x^{(s)} \sim f(\,\cdot \mid \theta^{(s)})$.
+2. Draw $\tilde x^{(s)} \sim f( \cdot \mid \theta^{(s)})$.
 
 This is exactly the Article-1 strategy applied to the posterior.
 Crucially, for multi-period sums **reuse the same $\theta^{(s)}$
@@ -532,9 +532,9 @@ Monthly cost decomposes into three components — salary plus
 benefits, overtime, and incidents:
 
 $$
-X_t \;=\; \underbrace{n_t \cdot \bar S_t \cdot \beta}_{\text{salary + benefits}}
-\;+\; \underbrace{C_{\text{ot},t}}_{\text{overtime}}
-\;+\; \underbrace{C_{\text{inc},t}}_{\text{incidents}}.
+X_t = \underbrace{n_t \cdot \bar S_t \cdot \beta}_{\text{salary + benefits}}
+ + \underbrace{C_{\text{ot},t}}_{\text{overtime}}
+ + \underbrace{C_{\text{inc},t}}_{\text{incidents}}.
 $$
 
 For the article's central inference layer, $\theta$ is the **mean
@@ -547,17 +547,17 @@ mechanics.
 
 ### 6.2 The revision calendar
 
-| Month               | Event                          | Bayesian analogue                      |
+| Month | Event | Bayesian analogue |
 |---------------------|--------------------------------|----------------------------------------|
-| December (year N−1) | Budget plan approved           | Prior $\pi(\theta)$                    |
-| Jan–Mar             | Q1 actuals arrive              | Likelihood $L(\theta\mid x_{1:3})$     |
-| **April**           | **FYF #1 (Q1 review)**         | Posterior #1                           |
-| Apr–Jun             | Q2 actuals arrive              | New likelihood                         |
-| **July**            | **FYF #2 (mid-year)**          | Posterior #2                           |
-| Jul–Sep             | Q3 actuals arrive              | New likelihood                         |
-| **October**         | **FYF #3 (Q3 review)**         | Posterior #3                           |
-| Oct–Dec             | Q4 actuals arrive              | Final data                             |
-| Jan (year N+1)      | Year-end close                 | Posterior #4                           |
+| December (year N−1) | Budget plan approved | Prior $\pi(\theta)$ |
+| Jan–Mar | Q1 actuals arrive | Likelihood $L(\theta\mid x_{1:3})$ |
+| **April** | **FYF #1 (Q1 review)** | Posterior #1 |
+| Apr–Jun | Q2 actuals arrive | New likelihood |
+| **July** | **FYF #2 (mid-year)** | Posterior #2 |
+| Jul–Sep | Q3 actuals arrive | New likelihood |
+| **October** | **FYF #3 (Q3 review)** | Posterior #3 |
+| Oct–Dec | Q4 actuals arrive | Final data |
+| Jan (year N+1) | Year-end close | Posterior #4 |
 
 Each FYF is a posterior. The previous posterior becomes the next
 prior. By the sequential = batch theorem (§4), the year-end
@@ -569,14 +569,14 @@ actuals.
 A 50-person IT team, average gross monthly salary R\$ 12{,}000,
 benefit-and-charge multiplier 1.75:
 
-| Parameter                       | Value                  | Rationale                                              |
+| Parameter | Value | Rationale |
 |---------------------------------|-----------------------|--------------------------------------------------------|
-| Prior mean $\mu_0$              | R\$ 1{,}050{,}000     | $50 \times 12{,}000 \times 1.75$.                      |
-| Prior s.d. $\sigma_0$           | R\$ 150{,}000         | Planner is ≈ 90 % sure within ±15 %.                   |
-| Observation s.d. $\sigma$       | R\$ 80{,}000          | Observed month-to-month variability.                   |
-| Budget ceiling $B$              | R\$ 13{,}200{,}000    | A typical guard-rail at $\mu_0 \times 12 \times 1.05$. |
-| Incident-rate prior             | $\text{Gamma}(3, 1)$  | Prior expectation 3 incidents/month.                   |
-| Overtime-proportion prior       | $\text{Beta}(2, 8)$   | Prior expectation 20 %.                                |
+| Prior mean $\mu_0$ | R\$ 1{,}050{,}000 | $50 \times 12{,}000 \times 1.75$. |
+| Prior s.d. $\sigma_0$ | R\$ 150{,}000 | Planner is ≈ 90 % sure within ±15 %. |
+| Observation s.d. $\sigma$ | R\$ 80{,}000 | Observed month-to-month variability. |
+| Budget ceiling $B$ | R\$ 13{,}200{,}000 | A typical guard-rail at $\mu_0 \times 12 \times 1.05$. |
+| Incident-rate prior | $\text{Gamma}(3, 1)$ | Prior expectation 3 incidents/month. |
+| Overtime-proportion prior | $\text{Beta}(2, 8)$ | Prior expectation 20 %. |
 
 ### 6.4 The FYF model object
 
@@ -598,7 +598,7 @@ Figure 6 shows a full simulation of the **on-target scenario**:
 The top panel walks the posterior: a steep correction in Q1, then
 month-by-month tightening. The bottom panel walks the year-end
 forecast: the predictive interval narrows from
-$\pm \approx \text{R\$ 950{,}000}$ at month 1 to $\pm \approx \text{R\$ 50{,}000}$
+$\pm \approx$ R\$ 950,000 at month 1 to $\pm \approx$ R\$ 50,000
 at month 11.
 
 ![Experiment E — full annual FYF cycle. Top: posterior trajectory with a 95 % credible band, monthly actuals as grey dots, and quarterly FYF review boxes. Bottom: year-end total predictive vs the budget ceiling.](../figures/exp_e_fyf_quarterly.png)
@@ -609,15 +609,15 @@ Five practical questions, each mapping cleanly onto a Bayesian
 quantity:
 
 1. **Shrinkage**: how much does each month pull the forecast away
-   from the plan? — The trajectory $\mu_n$.
+ from the plan? — The trajectory $\mu_n$.
 2. **Precision**: how tight is the 95 % credible interval at each
-   FYF? — $\pm 1.96\sigma_n$.
+ FYF? — $\pm 1.96\sigma_n$.
 3. **Surprise detection**: when should we override the update? —
-   The surprise z-score (§8).
+ The surprise z-score (§8).
 4. **Prior sensitivity**: how much does the prior choice matter
-   after 6 months? — The shrinkage of the prior gap by $w_0(n)$.
+ after 6 months? — The shrinkage of the prior gap by $w_0(n)$.
 5. **Predictive accuracy**: what is $P(T > B)$? — The closed form
-   in §5.3.
+ in §5.3.
 
 ---
 
@@ -627,16 +627,16 @@ We run eight experiments end-to-end and one animated companion. Each
 script is in `scripts/`; each figure is at 300 DPI with a fixed
 seed.
 
-| ID | Topic                       | Headline                                                        |
+| ID | Topic | Headline |
 |----|-----------------------------|-----------------------------------------------------------------|
-| A  | Prior to posterior          | A single update visualised end to end.                          |
-| B  | Four conjugate families     | One update rule, four distributional families (figure in §3).   |
-| C  | Sequential shrinkage        | Posterior tightens monotonically; $w_0(n) \to 0$ at rate $1/n$. |
-| D  | Prior sensitivity           | Three priors converge by Q3; gap decays at $w_0(n)$.            |
-| E  | Full FYF quarterly cycle    | Annual cycle with quarterly review boxes (figure in §6).        |
-| F  | Bayesian vs frequentist     | 100 frequentist CIs (~5 % miss) vs a single credible interval.  |
-| G  | Bayes factor vs AIC         | Both converge; Bayes factor sits on the Jeffreys scale.         |
-| H  | Posterior predictive check  | Calibration plot, z-score histogram, p-value CDF (§8).          |
+| A | Prior to posterior | A single update visualised end to end. |
+| B | Four conjugate families | One update rule, four distributional families (figure in §3). |
+| C | Sequential shrinkage | Posterior tightens monotonically; $w_0(n) \to 0$ at rate $1/n$. |
+| D | Prior sensitivity | Three priors converge by Q3; gap decays at $w_0(n)$. |
+| E | Full FYF quarterly cycle | Annual cycle with quarterly review boxes (figure in §6). |
+| F | Bayesian vs frequentist | 100 frequentist CIs (~5 % miss) vs a single credible interval. |
+| G | Bayes factor vs AIC | Both converge; Bayes factor sits on the Jeffreys scale. |
+| H | Posterior predictive check | Calibration plot, z-score histogram, p-value CDF (§8). |
 
 Three experiments deserve a paragraph here.
 
@@ -694,7 +694,7 @@ output?
 The standardised innovation under the posterior predictive is
 
 $$
-z_t \;=\; \frac{x_t - \mu_{t-1}}{\sqrt{\sigma_{t-1}^2 + \sigma^2}}.
+z_t = \frac{x_t - \mu_{t-1}}{\sqrt{\sigma_{t-1}^2 + \sigma^2}}.
 $$
 
 Under correct specification $z_t \mid x_{1:t-1} \sim N(0, 1)$. The
@@ -727,12 +727,12 @@ A sustained drift of $S_n / \sqrt n$ outside $[-2, 2]$ flags
 
 The article's operational rule:
 
-| Diagnostic                              | Action                                         |
+| Diagnostic | Action |
 |-----------------------------------------|------------------------------------------------|
-| Single $\lvert z_t\rvert > 3$           | One-off shock; trust the update; flag.         |
-| Repeated $\lvert z_t\rvert > 2$ same sign | Drift; re-elicit prior or change model.       |
-| Calibration $\widehat C \le 0.85$       | Underconfident model; $\sigma$ too small.     |
-| Calibration $\widehat C \ge 0.99$       | Over-cautious; $\sigma$ too large; vague.     |
+| Single $\lvert z_t\rvert > 3$ | One-off shock; trust the update; flag. |
+| Repeated $\lvert z_t\rvert > 2$ same sign | Drift; re-elicit prior or change model. |
+| Calibration $\widehat C \le 0.85$ | Underconfident model; $\sigma$ too small. |
+| Calibration $\widehat C \ge 0.99$ | Over-cautious; $\sigma$ too large; vague. |
 
 The diagnostic does not replace judgement. It tells the analyst
 when to stop trusting the conjugate update and start asking why.
@@ -746,24 +746,24 @@ for budget analytics. Each prior article supplies a building block
 that this article uses or extends.
 
 - **Article 1 — Monte Carlo budget.** The Article-1 simulation
-  strategy reappears in §5.4 as posterior predictive sampling. The
-  only change is the *input* distribution: Article 1 sampled from
-  the prior; this article samples from the posterior, which is
-  the prior updated with observed months. Same machine, better
-  input.
+ strategy reappears in §5.4 as posterior predictive sampling. The
+ only change is the *input* distribution: Article 1 sampled from
+ the prior; this article samples from the posterior, which is
+ the prior updated with observed months. Same machine, better
+ input.
 - **Article 2 — Distributions.** The four conjugate prior
-  distributions in §3 — Normal, Inverse-Gamma, Gamma, Beta — are
-  exactly the families fitted in Article 2. The likelihood
-  building blocks (Normal, Poisson, Binomial) are also from
-  Article 2. This article uses Article 2's MLE / AIC / BIC machinery
-  as a comparator in §5.5 and Experiment G.
+ distributions in §3 — Normal, Inverse-Gamma, Gamma, Beta — are
+ exactly the families fitted in Article 2. The likelihood
+ building blocks (Normal, Poisson, Binomial) are also from
+ Article 2. This article uses Article 2's MLE / AIC / BIC machinery
+ as a comparator in §5.5 and Experiment G.
 - **Article 3 — Headcount Markov chains.** Article 3 modelled the
-  evolution of $n_t$ — team size — via a birth-death chain. Plugged
-  into the §6.1 cost decomposition $X_t = n_t \bar S_t \beta + \cdots$,
-  it allows $n_t$ to drift over the year. The Article-3 transition
-  rates feed the headcount portion; the Bayesian inference layer in
-  this article infers the *cost-per-head times benefit multiplier*
-  given $n_t$.
+ evolution of $n_t$ — team size — via a birth-death chain. Plugged
+ into the §6.1 cost decomposition $X_t = n_t \bar S_t \beta + \cdots$,
+ it allows $n_t$ to drift over the year. The Article-3 transition
+ rates feed the headcount portion; the Bayesian inference layer in
+ this article infers the *cost-per-head times benefit multiplier*
+ given $n_t$.
 
 Together the four articles cover a single problem from four sides:
 how to *simulate* it (Article 1), how to *fit* its components
@@ -777,30 +777,30 @@ from incoming data* (this article).
 A short checklist, derived from the article's central results.
 
 1. **Translate the plan into a prior.** Plan value is $\mu_0$;
-   stated confidence and band width fix $\sigma_0 = w/z_{(1+\gamma)/2}$.
-   Document both. Re-elicit at the start of each fiscal year.
+ stated confidence and band width fix $\sigma_0 = w/z_{(1+\gamma)/2}$.
+ Document both. Re-elicit at the start of each fiscal year.
 2. **Score every FYF on shrinkage and precision.** Report
-   $\mu_n$, $\sigma_n$, the 95 % credible interval, and the prior
-   weight $w_0(n)$. The prior weight tells the audience how much
-   the new forecast still leans on the original plan; it should
-   trend toward zero.
+ $\mu_n$, $\sigma_n$, the 95 % credible interval, and the prior
+ weight $w_0(n)$. The prior weight tells the audience how much
+ the new forecast still leans on the original plan; it should
+ trend toward zero.
 3. **Report the predictive, not the posterior, for forward-looking
-   questions.** Internal "what is our best estimate of the mean?"
-   uses the credible interval. External "will we exceed the
-   budget?" uses the predictive: $P(T > B)$ via the year-end
-   formula in §5.3, with the **correct** quadratic-horizon variance.
+ questions.** Internal "what is our best estimate of the mean?"
+ uses the credible interval. External "will we exceed the
+ budget?" uses the predictive: $P(T > B)$ via the year-end
+ formula in §5.3, with the **correct** quadratic-horizon variance.
 4. **Run the diagnostic at every quarterly review.** Compute the
-   surprise z-scores for the months of the quarter, the calibration
-   score on the year-to-date, and the cumulative surprise.
-   Investigate any single $|z| > 3$, any pattern of $|z| > 2$, or
-   persistent miscalibration.
+ surprise z-scores for the months of the quarter, the calibration
+ score on the year-to-date, and the cumulative surprise.
+ Investigate any single $|z| > 3$, any pattern of $|z| > 2$, or
+ persistent miscalibration.
 5. **Treat prior–data conflict as a signal, not a number.** When
-   $D_n = |\mu_0 - \bar x_n|/\sigma_0 > 3$, stop and ask why. The
-   model assumed both the prior and the sampling model were well
-   specified; if either fails, the posterior interpolates between
-   two wrong sources. The right action is rarely to trust the
-   posterior — usually it is to step outside the model and
-   diagnose.
+ $D_n = |\mu_0 - \bar x_n|/\sigma_0 > 3$, stop and ask why. The
+ model assumed both the prior and the sampling model were well
+ specified; if either fails, the posterior interpolates between
+ two wrong sources. The right action is rarely to trust the
+ posterior — usually it is to step outside the model and
+ diagnose.
 
 The framework is short by design. Bayesian inference does the math;
 the analyst does the judgement.
@@ -820,15 +820,15 @@ intervals.
 Three operational gains follow:
 
 - The **precision-weighted mean** replaces ad-hoc reweighting of
-  plan vs actuals. The weights are functions of stated
-  uncertainties, not gut feeling.
+ plan vs actuals. The weights are functions of stated
+ uncertainties, not gut feeling.
 - **Monotonic shrinkage** replaces vague claims that "the forecast
-  got tighter": $\sigma_n$ decays at exactly $1/\sqrt n$, with a
-  closed form for the data-share threshold.
+ got tighter": $\sigma_n$ decays at exactly $1/\sqrt n$, with a
+ closed form for the data-share threshold.
 - The **posterior predictive** answers $P(\text{annual total} > B)$
-  directly, accounting for both parameter uncertainty and future
-  noise — and including the often-missed dependence between
-  unobserved months that share $\theta$.
+ directly, accounting for both parameter uncertainty and future
+ noise — and including the often-missed dependence between
+ unobserved months that share $\theta$.
 
 The natural next article extends this framework to **hierarchical
 models**: pooling information across cost centres, business units,

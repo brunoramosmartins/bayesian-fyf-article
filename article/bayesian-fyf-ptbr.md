@@ -39,15 +39,15 @@ identidade transforma três dores qualitativas em resultados em
 forma fechada:
 
 1. *Como ponderar o plano contra os dados?* — Pela **média
-   ponderada por precisão** da posteriori Normal–Normal. Os pesos
-   não são questão de julgamento: são funções da incerteza a priori
-   declarada e do ruído de observação por mês.
+ ponderada por precisão** da posteriori Normal–Normal. Os pesos
+ não são questão de julgamento: são funções da incerteza a priori
+ declarada e do ruído de observação por mês.
 2. *Quão apertada está minha previsão?* — A variância a posteriori
-   encolhe monotonicamente a cada novo mês. A Seção 4 tornará esse
-   "monotonicamente" rigoroso e quantitativo.
+ encolhe monotonicamente a cada novo mês. A Seção 4 tornará esse
+ "monotonicamente" rigoroso e quantitativo.
 3. *Qual a probabilidade de fechar o ano acima do orçamento?* — A
-   distribuição **preditiva a posteriori** aplicada aos meses não
-   observados dá uma forma fechada exata, não uma heurística.
+ distribuição **preditiva a posteriori** aplicada aos meses não
+ observados dá uma forma fechada exata, não uma heurística.
 
 O caminho da afirmação à demonstração é curto. A Seção 2 deriva o
 teorema de Bayes para parâmetros contínuos e esclarece a diferença
@@ -92,7 +92,7 @@ ambos tratados como variáveis aleatórias. A **regra do produto para
 densidades** fatora a densidade conjunta de duas formas:
 
 $$
-f(x, \theta) \;=\; f(x \mid \theta)\,\pi(\theta) \;=\; \pi(\theta \mid x)\,f(x).
+f(x, \theta) = f(x \mid \theta) \pi(\theta) = \pi(\theta \mid x) f(x).
 $$
 
 Igualando e resolvendo para o segundo fator obtemos o **teorema de
@@ -100,9 +100,9 @@ Bayes para parâmetros contínuos**:
 
 $$
 \boxed{\quad
-\pi(\theta \mid x) \;=\; \frac{f(x \mid \theta)\,\pi(\theta)}{f(x)},
+\pi(\theta \mid x) = \frac{f(x \mid \theta) \pi(\theta)}{f(x)},
 \qquad
-f(x) \;=\; \int f(x \mid \theta)\,\pi(\theta)\,\mathrm d\theta.
+f(x) = \int f(x \mid \theta) \pi(\theta) \mathrm d\theta.
 \quad}
 $$
 
@@ -115,7 +115,7 @@ a priori. $\pi(\theta \mid x)$ é a **posteriori**: a previsão
 revisada.
 
 Como $f(x)$ não envolve $\theta$, a forma proporcional
-$\pi(\theta \mid x) \propto f(x \mid \theta)\,\pi(\theta)$ basta na
+$\pi(\theta \mid x) \propto f(x \mid \theta) \pi(\theta)$ basta na
 prática. Em famílias conjugadas (§3) reconhecemos o núcleo da
 direita como o de uma distribuição conhecida e leitamos os
 hiperparâmetros direto; a verossimilhança marginal está implícita
@@ -169,12 +169,12 @@ que a verdade está dentro de $\pm w$" está implicitamente
 especificando uma priori Normal $N(\mu_0, \sigma_0^2)$ com
 
 $$
-\sigma_0 \;=\; \frac{w}{z_{(1+\gamma)/2}},
+\sigma_0 = \frac{w}{z_{(1+\gamma)/2}},
 $$
 
 em que $z_q$ é o quantil Normal padrão. O cenário de referência do
-artigo usa $\mu_0 = \text{R\$ 1.050.000}$,
-$\sigma_0 = \text{R\$ 150.000}$ — um plano de orçamento e uma
+artigo usa $\mu_0$ = R\$ 1.050.000,
+$\sigma_0$ = R\$ 150.000 — um plano de orçamento e uma
 incerteza declarada, traduzidos em priori em uma linha.
 
 ---
@@ -203,13 +203,13 @@ $$
 
 A verossimilhança, vista como função de $\theta$ e após expandir
 $\sum (x_i - \theta)^2 = \sum (x_i - \bar x)^2 + n(\bar x - \theta)^2$,
-é proporcional a $\exp\!\big(-\tfrac{n}{2\sigma^2}(\theta - \bar x)^2\big)$.
+é proporcional a $\exp\big(-\tfrac{n}{2\sigma^2}(\theta - \bar x)^2\big)$.
 Multiplicando pela priori, agrupando por potências de $\theta$ e
 completando o quadrado obtemos um núcleo Normal com
 
 $$
 \boxed{\quad
-\theta \mid x_{1:n} \;\sim\; N(\mu_n, \sigma_n^2),
+\theta \mid x_{1:n} \sim N(\mu_n, \sigma_n^2),
 \qquad
 \tau_n = \tau_0 + n\tau,
 \qquad
@@ -222,9 +222,9 @@ as **precisões** (inversos das variâncias). De forma equivalente,
 em variâncias,
 
 $$
-\mu_n \;=\; \frac{\sigma^2 \mu_0 + n \sigma_0^2 \bar x}{\sigma^2 + n \sigma_0^2},
+\mu_n = \frac{\sigma^2 \mu_0 + n \sigma_0^2 \bar x}{\sigma^2 + n \sigma_0^2},
 \qquad
-\sigma_n^2 \;=\; \frac{\sigma^2 \sigma_0^2}{\sigma^2 + n \sigma_0^2}.
+\sigma_n^2 = \frac{\sigma^2 \sigma_0^2}{\sigma^2 + n \sigma_0^2}.
 $$
 
 Essa identidade admite três leituras equivalentes.
@@ -259,7 +259,7 @@ $$
 $$
 
 $$
-\beta_n = \beta_0 + \tfrac{1}{2} S + \tfrac{1}{2}\,\frac{\kappa_0 n}{\kappa_0 + n}\,(\bar x - \mu_0)^2,
+\beta_n = \beta_0 + \tfrac{1}{2} S + \tfrac{1}{2} \frac{\kappa_0 n}{\kappa_0 + n} (\bar x - \mu_0)^2,
 \quad S = \sum_{i=1}^n (x_i - \bar x)^2.
 $$
 
@@ -277,7 +277,7 @@ taxa), a posteriori é
 
 $$
 \boxed{\quad
-\lambda \mid x_{1:n} \;\sim\; \text{Gama}\!\Big(\alpha_0 + \textstyle\sum_i x_i,\; \beta_0 + n\Big).
+\lambda \mid x_{1:n} \sim \text{Gama}\Big(\alpha_0 + \textstyle\sum_i x_i, \beta_0 + n\Big).
 \quad}
 $$
 
@@ -293,7 +293,7 @@ $\text{Beta}(\alpha_0, \beta_0)$ e observação $x \mid p \sim \text{Binomial}(n
 
 $$
 \boxed{\quad
-p \mid x \;\sim\; \text{Beta}(\alpha_0 + x,\; \beta_0 + n - x).
+p \mid x \sim \text{Beta}(\alpha_0 + x, \beta_0 + n - x).
 \quad}
 $$
 
@@ -341,25 +341,25 @@ tivesse esperado e feito uma atualização única.
 A média a posteriori Normal–Normal é a combinação convexa
 
 $$
-\mu_n \;=\; w_0(n)\,\mu_0 + (1 - w_0(n))\,\bar x_n,
+\mu_n = w_0(n) \mu_0 + (1 - w_0(n)) \bar x_n,
 \qquad
-w_0(n) \;=\; \frac{\tau_0}{\tau_0 + n\tau} \;=\; \frac{\sigma^2/\sigma_0^2}{\sigma^2/\sigma_0^2 + n}.
+w_0(n) = \frac{\tau_0}{\tau_0 + n\tau} = \frac{\sigma^2/\sigma_0^2}{\sigma^2/\sigma_0^2 + n}.
 $$
 
 Três consequências seguem imediatamente:
 
 - **O peso de encolhimento decai como $1/n$**.
-  $w_0(n) = \Theta(1/n)$, com constante líder $\sigma^2/\sigma_0^2$.
+ $w_0(n) = \Theta(1/n)$, com constante líder $\sigma^2/\sigma_0^2$.
 - **A variância a posteriori também decai como $1/n$**.
-  $\sigma_n^2 = 1/(\tau_0 + n\tau) \sim \sigma^2/n$, batendo
-  assintoticamente com a variância amostral frequentista de $\bar X_n$.
+ $\sigma_n^2 = 1/(\tau_0 + n\tau) \sim \sigma^2/n$, batendo
+ assintoticamente com a variância amostral frequentista de $\bar X_n$.
 - **A média a posteriori converge para a média dos dados**.
-  $\mu_n - \bar x_n = w_0(n)(\mu_0 - \bar x_n) \to 0$.
+ $\mu_n - \bar x_n = w_0(n)(\mu_0 - \bar x_n) \to 0$.
 
 A forma recursiva (**ganho de Kalman**)
 
 $$
-\mu_n \;=\; \mu_{n-1} + K_n(x_n - \mu_{n-1}),
+\mu_n = \mu_{n-1} + K_n(x_n - \mu_{n-1}),
 \qquad
 K_n = \frac{\sigma_{n-1}^2}{\sigma_{n-1}^2 + \sigma^2}
 $$
@@ -378,10 +378,10 @@ $\sigma = 80.000$, a razão $\sigma^2/\sigma_0^2 \approx 0{,}2844$:
 
 | Mês $n$ | $w_0(n)$ | $1 - w_0(n)$ |
 |--------:|---------:|-------------:|
-| 1       | 0,2215   | 0,7785       |
-| 3       | 0,0866   | 0,9134       |
-| 6       | 0,0453   | 0,9547       |
-| 12      | 0,0232   | 0,9768       |
+| 1 | 0,2215 | 0,7785 |
+| 3 | 0,0866 | 0,9134 |
+| 6 | 0,0453 | 0,9547 |
+| 12 | 0,0232 | 0,9768 |
 
 A participação dos dados cruza **80 % em $n = 2$** (já em fevereiro
 com revisões mensais), **95 % em $n = 6$** (FYF de meio de ano). Na
@@ -395,7 +395,7 @@ $\mu_0^{(A)} \ne \mu_0^{(B)}$ produzem posterioris cuja discordância
 encolhe exatamente em $w_0(n)$:
 
 $$
-\big|\mu_n^{(A)} - \mu_n^{(B)}\big| \;=\; w_0(n) \cdot \big|\mu_0^{(A)} - \mu_0^{(B)}\big|.
+\big|\mu_n^{(A)} - \mu_n^{(B)}\big| = w_0(n) \cdot \big|\mu_0^{(A)} - \mu_0^{(B)}\big|.
 $$
 
 No mês 6, uma diferença inicial de R\$ 150.000 encolheu a ≈ R\$ 6.780.
@@ -432,7 +432,7 @@ custará o total do ano?".
 
 $$
 \boxed{\quad
-p(\tilde x \mid x) \;=\; \int f(\tilde x \mid \theta)\,\pi(\theta \mid x)\,\mathrm d\theta.
+p(\tilde x \mid x) = \int f(\tilde x \mid \theta) \pi(\theta \mid x) \mathrm d\theta.
 \quad}
 $$
 
@@ -440,10 +440,10 @@ A variância preditiva se decompõe pela **lei da variância total**:
 
 $$
 \mathrm{Var}(\tilde x \mid x)
-\;=\;
-\underbrace{\mathbb E\!\big[\mathrm{Var}(\tilde x \mid \theta) \mid x\big]}_{\text{ruído amostral esperado}}
-\;+\;
-\underbrace{\mathrm{Var}\!\big(\mathbb E[\tilde x \mid \theta] \mid x\big)}_{\text{incerteza do parâmetro}}.
+ = 
+\underbrace{\mathbb E\big[\mathrm{Var}(\tilde x \mid \theta) \mid x\big]}_{\text{ruído amostral esperado}}
+ + 
+\underbrace{\mathrm{Var}\big(\mathbb E[\tilde x \mid \theta] \mid x\big)}_{\text{incerteza do parâmetro}}.
 $$
 
 O primeiro termo é **ruído irredutível**. O segundo encolhe com mais
@@ -461,11 +461,11 @@ Para os três pares operacionalmente usados pelo artigo:
 
 - **Normal–Normal**: $\tilde x \mid x \sim N(\mu_n, \sigma_n^2 + \sigma^2)$.
 - **Gama–Poisson**: $\tilde x \mid x \sim \text{NegBin}(\alpha_n, \beta_n/(\beta_n+1))$,
-  parametrização forma–sucesso. Média preditiva $\alpha_n/\beta_n$,
-  variância $\alpha_n(\beta_n+1)/\beta_n^2 > \alpha_n/\beta_n$ —
-  **superdispersão** induzida pela incerteza do parâmetro.
+ parametrização forma–sucesso. Média preditiva $\alpha_n/\beta_n$,
+ variância $\alpha_n(\beta_n+1)/\beta_n^2 > \alpha_n/\beta_n$ —
+ **superdispersão** induzida pela incerteza do parâmetro.
 - **Beta–Binomial**: lote futuro de tamanho $m$ tem PMF preditiva
-  $\Pr(\tilde x = k) = \binom{m}{k} B(\alpha_n + k, \beta_n + m - k)/B(\alpha_n, \beta_n)$.
+ $\Pr(\tilde x = k) = \binom{m}{k} B(\alpha_n + k, \beta_n + m - k)/B(\alpha_n, \beta_n)$.
 
 ### 5.3 O total de fim de ano — cuidado com a independência
 
@@ -481,7 +481,7 @@ independentes dados $x_{1:m}$; suas variâncias somam:
 
 $$
 \boxed{\quad
-\tilde S \mid x_{1:m} \;\sim\; N\!\big((12-m)\,\mu_m,\;\; (12-m)^2\,\sigma_m^2 \;+\; (12-m)\,\sigma^2\big).
+\tilde S \mid x_{1:m} \sim N\big((12-m) \mu_m, (12-m)^2 \sigma_m^2 + (12-m) \sigma^2\big).
 \quad}
 $$
 
@@ -496,13 +496,13 @@ $S_m + (12-m)\mu_m$ e a variância acima. Então
 
 $$
 P(T > B \mid x_{1:m})
-\;=\;
-1 - \Phi\!\Big(\frac{B - (S_m + (12-m)\mu_m)}{\sqrt{(12-m)^2 \sigma_m^2 + (12-m)\sigma^2}}\Big).
+ = 
+1 - \Phi\Big(\frac{B - (S_m + (12-m)\mu_m)}{\sqrt{(12-m)^2 \sigma_m^2 + (12-m)\sigma^2}}\Big).
 $$
 
 Para o cenário de referência em meio de ano com
-$\mu_6 = \text{R\$ 1.085.000}$, $\sigma_6 = \text{R\$ 32.000}$,
-$S_6 = \text{R\$ 6.510.000}$, $B = \text{R\$ 13.200.000}$:
+$\mu_6$ = R\$ 1.085.000, $\sigma_6$ = R\$ 32.000,
+$S_6$ = R\$ 6.510.000, $B$ = R\$ 13.200.000:
 $P(T > B) \approx 26\%$ pela fórmula correta, vs ≈ 20 % pelo cálculo
 ingênuo. **A dependência entre meses futuros não é erro de
 arredondamento.**
@@ -513,7 +513,7 @@ As formas fechadas são convenientes, mas a receita Monte Carlo
 funciona em qualquer cenário:
 
 1. Sortear $\theta^{(s)} \sim \pi(\theta \mid x)$.
-2. Sortear $\tilde x^{(s)} \sim f(\,\cdot \mid \theta^{(s)})$.
+2. Sortear $\tilde x^{(s)} \sim f( \cdot \mid \theta^{(s)})$.
 
 É exatamente a estratégia do Artigo 1 aplicada à posteriori. Crucial:
 para somas multi-período **reusar o mesmo $\theta^{(s)}$ em todos os
@@ -543,9 +543,9 @@ O custo mensal se decompõe em três componentes — salários mais
 benefícios, horas-extra e incidentes:
 
 $$
-X_t \;=\; \underbrace{n_t \cdot \bar S_t \cdot \beta}_{\text{salário + benefícios}}
-\;+\; \underbrace{C_{\text{ot},t}}_{\text{horas-extra}}
-\;+\; \underbrace{C_{\text{inc},t}}_{\text{incidentes}}.
+X_t = \underbrace{n_t \cdot \bar S_t \cdot \beta}_{\text{salário + benefícios}}
+ + \underbrace{C_{\text{ot},t}}_{\text{horas-extra}}
+ + \underbrace{C_{\text{inc},t}}_{\text{incidentes}}.
 $$
 
 Para a camada central de inferência do artigo, $\theta$ é o **custo
@@ -558,17 +558,17 @@ mesma máquina; mantemos os cenários canônicos desta seção em um
 
 ### 6.2 O calendário de revisões
 
-| Mês                 | Evento                          | Análogo Bayesiano                       |
+| Mês | Evento | Análogo Bayesiano |
 |---------------------|---------------------------------|-----------------------------------------|
-| Dezembro (ano N−1)  | Plano de orçamento aprovado     | Priori $\pi(\theta)$                    |
-| Jan–Mar             | Realizados Q1 chegam            | Verossimilhança $L(\theta\mid x_{1:3})$ |
-| **Abril**           | **FYF #1 (revisão Q1)**         | Posteriori #1                           |
-| Abr–Jun             | Realizados Q2 chegam            | Nova verossimilhança                    |
-| **Julho**           | **FYF #2 (meio de ano)**        | Posteriori #2                           |
-| Jul–Set             | Realizados Q3 chegam            | Nova verossimilhança                    |
-| **Outubro**         | **FYF #3 (revisão Q3)**         | Posteriori #3                           |
-| Out–Dez             | Realizados Q4 chegam            | Dado final                              |
-| Jan (ano N+1)       | Fechamento do ano               | Posteriori #4                           |
+| Dezembro (ano N−1) | Plano de orçamento aprovado | Priori $\pi(\theta)$ |
+| Jan–Mar | Realizados Q1 chegam | Verossimilhança $L(\theta\mid x_{1:3})$ |
+| **Abril** | **FYF #1 (revisão Q1)** | Posteriori #1 |
+| Abr–Jun | Realizados Q2 chegam | Nova verossimilhança |
+| **Julho** | **FYF #2 (meio de ano)** | Posteriori #2 |
+| Jul–Set | Realizados Q3 chegam | Nova verossimilhança |
+| **Outubro** | **FYF #3 (revisão Q3)** | Posteriori #3 |
+| Out–Dez | Realizados Q4 chegam | Dado final |
+| Jan (ano N+1) | Fechamento do ano | Posteriori #4 |
 
 Cada FYF é uma posteriori. A posteriori anterior vira priori
 seguinte. Pelo teorema sequencial = lote (§4), a posteriori de fim
@@ -580,14 +580,14 @@ de ano iguala a posteriori em lote única condicionada em todos os
 Time de TI com 50 pessoas, salário médio mensal bruto R\$ 12.000,
 multiplicador de benefícios e encargos 1,75:
 
-| Parâmetro                       | Valor                | Justificativa                                          |
+| Parâmetro | Valor | Justificativa |
 |---------------------------------|----------------------|--------------------------------------------------------|
-| Média a priori $\mu_0$          | R\$ 1.050.000        | $50 \times 12.000 \times 1{,}75$.                       |
-| Desv. pad. a priori $\sigma_0$  | R\$ 150.000          | Planejador ≈ 90 % seguro dentro de ±15 %.              |
-| Desv. pad. obs. $\sigma$        | R\$ 80.000           | Variabilidade mensal observada.                        |
-| Teto orçamentário $B$           | R\$ 13.200.000       | Guard-rail típico em $\mu_0 \times 12 \times 1{,}05$.   |
-| Priori da taxa de incidentes    | $\text{Gama}(3, 1)$  | Expectativa a priori de 3 incidentes/mês.              |
-| Priori da prop. de horas-extra  | $\text{Beta}(2, 8)$  | Expectativa a priori de 20 %.                          |
+| Média a priori $\mu_0$ | R\$ 1.050.000 | $50 \times 12.000 \times 1{,}75$. |
+| Desv. pad. a priori $\sigma_0$ | R\$ 150.000 | Planejador ≈ 90 % seguro dentro de ±15 %. |
+| Desv. pad. obs. $\sigma$ | R\$ 80.000 | Variabilidade mensal observada. |
+| Teto orçamentário $B$ | R\$ 13.200.000 | Guard-rail típico em $\mu_0 \times 12 \times 1{,}05$. |
+| Priori da taxa de incidentes | $\text{Gama}(3, 1)$ | Expectativa a priori de 3 incidentes/mês. |
+| Priori da prop. de horas-extra | $\text{Beta}(2, 8)$ | Expectativa a priori de 20 %. |
 
 ### 6.4 O objeto modelo FYF
 
@@ -609,8 +609,8 @@ $N(\theta_\star = 1{,}080{,}000, \sigma)$ (a verdade levemente acima
 da expectativa do planejador). O painel superior caminha a
 posteriori: correção íngreme em Q1, depois aperto mês a mês. O
 painel inferior caminha a previsão de fim de ano: o intervalo
-preditivo encolhe de $\pm \approx \text{R\$ 950.000}$ no mês 1 a
-$\pm \approx \text{R\$ 50.000}$ no mês 11.
+preditivo encolhe de $\pm \approx$ R\$ 950.000 no mês 1 a
+$\pm \approx$ R\$ 50.000 no mês 11.
 
 ![Experimento E — ciclo FYF anual completo. Topo: trajetória da posteriori com banda credível de 95 %, realizados mensais como pontos cinzas, e caixas de FYF trimestral. Base: total de fim de ano preditivo vs teto orçamentário.](../figures/exp_e_fyf_quarterly.png)
 
@@ -620,16 +620,16 @@ Cinco perguntas práticas, cada uma mapeando direto numa quantidade
 Bayesiana:
 
 1. **Encolhimento**: quanto cada mês puxa a previsão para longe do
-   plano? — A trajetória $\mu_n$.
+ plano? — A trajetória $\mu_n$.
 2. **Precisão**: quão apertado é o intervalo credível 95 % em cada
-   FYF? — $\pm 1{,}96\sigma_n$.
+ FYF? — $\pm 1{,}96\sigma_n$.
 3. **Detecção de surpresa**: quando devemos sobrescrever a
-   atualização? — O z-score de surpresa (§8).
+ atualização? — O z-score de surpresa (§8).
 4. **Sensibilidade ao prior**: quanto a escolha da priori importa
-   após 6 meses? — O encolhimento da diferença de prioris por
-   $w_0(n)$.
+ após 6 meses? — O encolhimento da diferença de prioris por
+ $w_0(n)$.
 5. **Acurácia preditiva**: qual é $P(T > B)$? — A forma fechada de
-   §5.3.
+ §5.3.
 
 ---
 
@@ -639,16 +639,16 @@ Rodamos oito experimentos ponta-a-ponta e um companheiro animado.
 Cada script está em `scripts/`; cada figura está em 300 DPI com
 seed fixo.
 
-| ID | Tópico                      | Manchete                                                          |
+| ID | Tópico | Manchete |
 |----|-----------------------------|-------------------------------------------------------------------|
-| A  | Priori a posteriori         | Uma única atualização visualizada ponta a ponta.                  |
-| B  | Quatro famílias conjugadas  | Uma regra, quatro famílias distribuicionais (figura em §3).       |
-| C  | Encolhimento sequencial     | Posteriori afina monotonicamente; $w_0(n) \to 0$ em $1/n$.        |
-| D  | Sensibilidade ao prior      | Três prioris convergem por Q3; gap decai em $w_0(n)$.             |
-| E  | Ciclo FYF trimestral        | Ciclo anual com caixas de revisão trimestral (figura em §6).      |
-| F  | Bayesiano vs frequentista   | 100 ICs frequentistas (~5 % erram) vs intervalo credível único.   |
-| G  | Fator de Bayes vs AIC       | Ambos convergem; o fator de Bayes na escala de Jeffreys.          |
-| H  | Posterior predictive check  | Calibração, histograma de z, CDF de p-valor (§8).                 |
+| A | Priori a posteriori | Uma única atualização visualizada ponta a ponta. |
+| B | Quatro famílias conjugadas | Uma regra, quatro famílias distribuicionais (figura em §3). |
+| C | Encolhimento sequencial | Posteriori afina monotonicamente; $w_0(n) \to 0$ em $1/n$. |
+| D | Sensibilidade ao prior | Três prioris convergem por Q3; gap decai em $w_0(n)$. |
+| E | Ciclo FYF trimestral | Ciclo anual com caixas de revisão trimestral (figura em §6). |
+| F | Bayesiano vs frequentista | 100 ICs frequentistas (~5 % erram) vs intervalo credível único. |
+| G | Fator de Bayes vs AIC | Ambos convergem; o fator de Bayes na escala de Jeffreys. |
+| H | Posterior predictive check | Calibração, histograma de z, CDF de p-valor (§8). |
 
 Três experimentos merecem um parágrafo aqui.
 
@@ -708,7 +708,7 @@ acreditar na saída?
 A inovação padronizada sob a preditiva a posteriori é
 
 $$
-z_t \;=\; \frac{x_t - \mu_{t-1}}{\sqrt{\sigma_{t-1}^2 + \sigma^2}}.
+z_t = \frac{x_t - \mu_{t-1}}{\sqrt{\sigma_{t-1}^2 + \sigma^2}}.
 $$
 
 Sob especificação correta $z_t \mid x_{1:t-1} \sim N(0, 1)$. Os
@@ -741,12 +741,12 @@ Um drift sustentado de $S_n / \sqrt n$ fora de $[-2, 2]$ sinaliza
 
 A regra operacional do artigo:
 
-| Diagnóstico                              | Ação                                            |
+| Diagnóstico | Ação |
 |------------------------------------------|-------------------------------------------------|
-| Único $\lvert z_t\rvert > 3$             | Choque pontual; confiar na atualização; sinalizar. |
-| $\lvert z_t\rvert > 2$ repetido mesmo sinal | Drift; re-elicitar priori ou trocar modelo.   |
-| Calibração $\widehat C \le 0{,}85$       | Modelo subconfiante; $\sigma$ pequeno demais.  |
-| Calibração $\widehat C \ge 0{,}99$       | Sobre-cauteloso; $\sigma$ grande; vago demais. |
+| Único $\lvert z_t\rvert > 3$ | Choque pontual; confiar na atualização; sinalizar. |
+| $\lvert z_t\rvert > 2$ repetido mesmo sinal | Drift; re-elicitar priori ou trocar modelo. |
+| Calibração $\widehat C \le 0{,}85$ | Modelo subconfiante; $\sigma$ pequeno demais. |
+| Calibração $\widehat C \ge 0{,}99$ | Sobre-cauteloso; $\sigma$ grande; vago demais. |
 
 O diagnóstico não substitui julgamento. Ele diz ao analista quando
 parar de confiar na atualização conjugada e começar a perguntar por
@@ -761,25 +761,25 @@ probabilísticos para análise de orçamento. Cada artigo anterior
 fornece um bloco de construção que este artigo usa ou estende.
 
 - **Artigo 1 — Orçamento por Monte Carlo.** A estratégia de
-  simulação do Artigo 1 reaparece em §5.4 como amostragem
-  preditiva a posteriori. A única mudança é a distribuição de
-  *entrada*: o Artigo 1 amostrava da priori; este artigo amostra
-  da posteriori, que é a priori atualizada com meses observados.
-  Mesma máquina, melhor entrada.
+ simulação do Artigo 1 reaparece em §5.4 como amostragem
+ preditiva a posteriori. A única mudança é a distribuição de
+ *entrada*: o Artigo 1 amostrava da priori; este artigo amostra
+ da posteriori, que é a priori atualizada com meses observados.
+ Mesma máquina, melhor entrada.
 - **Artigo 2 — Distribuições.** As quatro distribuições conjugadas
-  a priori em §3 — Normal, Inversa-Gama, Gama, Beta — são exatamente
-  as famílias ajustadas no Artigo 2. Os blocos de construção da
-  verossimilhança (Normal, Poisson, Binomial) também vêm do Artigo
-  2. Este artigo usa a maquinaria MLE / AIC / BIC do Artigo 2 como
-  comparador em §5.5 e no Experimento G.
+ a priori em §3 — Normal, Inversa-Gama, Gama, Beta — são exatamente
+ as famílias ajustadas no Artigo 2. Os blocos de construção da
+ verossimilhança (Normal, Poisson, Binomial) também vêm do Artigo
+ 2. Este artigo usa a maquinaria MLE / AIC / BIC do Artigo 2 como
+ comparador em §5.5 e no Experimento G.
 - **Artigo 3 — Cadeias de Markov para headcount.** O Artigo 3
-  modelou a evolução de $n_t$ — tamanho do time — via uma cadeia de
-  nascimento-morte. Plugada na decomposição de custo de §6.1
-  $X_t = n_t \bar S_t \beta + \cdots$, ela permite que $n_t$ derive
-  ao longo do ano. As taxas de transição do Artigo 3 alimentam a
-  parte de headcount; a camada de inferência Bayesiana deste artigo
-  infere o *custo-por-cabeça vezes multiplicador de benefícios*
-  dado $n_t$.
+ modelou a evolução de $n_t$ — tamanho do time — via uma cadeia de
+ nascimento-morte. Plugada na decomposição de custo de §6.1
+ $X_t = n_t \bar S_t \beta + \cdots$, ela permite que $n_t$ derive
+ ao longo do ano. As taxas de transição do Artigo 3 alimentam a
+ parte de headcount; a camada de inferência Bayesiana deste artigo
+ infere o *custo-por-cabeça vezes multiplicador de benefícios*
+ dado $n_t$.
 
 Juntos, os quatro artigos cobrem um único problema por quatro
 ângulos: como *simulá-lo* (Artigo 1), como *ajustar* seus
@@ -793,28 +793,28 @@ como *aprender* com dados que chegam (este artigo).
 Um checklist curto, derivado dos resultados centrais do artigo.
 
 1. **Traduza o plano numa priori.** Valor do plano é $\mu_0$;
-   confiança declarada e largura da banda fixam $\sigma_0 = w/z_{(1+\gamma)/2}$.
-   Documente os dois. Re-elicite no início de cada ano fiscal.
+ confiança declarada e largura da banda fixam $\sigma_0 = w/z_{(1+\gamma)/2}$.
+ Documente os dois. Re-elicite no início de cada ano fiscal.
 2. **Pontue cada FYF em encolhimento e precisão.** Reporte
-   $\mu_n$, $\sigma_n$, o intervalo credível 95 % e o peso a priori
-   $w_0(n)$. O peso a priori diz à audiência o quanto a previsão
-   nova ainda apoia o plano original; deveria tender a zero.
+ $\mu_n$, $\sigma_n$, o intervalo credível 95 % e o peso a priori
+ $w_0(n)$. O peso a priori diz à audiência o quanto a previsão
+ nova ainda apoia o plano original; deveria tender a zero.
 3. **Reporte a preditiva, não a posteriori, para perguntas
-   prospectivas.** "Qual nossa melhor estimativa da média?" interna
-   usa o intervalo credível. "Vamos exceder o orçamento?" externa
-   usa a preditiva: $P(T > B)$ via a fórmula de fim de ano em §5.3,
-   com a variância **correta** de horizonte quadrático.
+ prospectivas.** "Qual nossa melhor estimativa da média?" interna
+ usa o intervalo credível. "Vamos exceder o orçamento?" externa
+ usa a preditiva: $P(T > B)$ via a fórmula de fim de ano em §5.3,
+ com a variância **correta** de horizonte quadrático.
 4. **Rode o diagnóstico em cada revisão trimestral.** Compute os
-   z-scores de surpresa para os meses do trimestre, a calibração no
-   year-to-date e a surpresa cumulativa. Investigue qualquer
-   $|z| > 3$ único, qualquer padrão de $|z| > 2$ ou má-calibração
-   persistente.
+ z-scores de surpresa para os meses do trimestre, a calibração no
+ year-to-date e a surpresa cumulativa. Investigue qualquer
+ $|z| > 3$ único, qualquer padrão de $|z| > 2$ ou má-calibração
+ persistente.
 5. **Trate conflito priori–dados como sinal, não número.** Quando
-   $D_n = |\mu_0 - \bar x_n|/\sigma_0 > 3$, pare e pergunte por
-   quê. O modelo assumiu que tanto a priori quanto o modelo amostral
-   estavam bem especificados; se algum falha, a posteriori interpola
-   entre duas fontes erradas. A ação correta raramente é confiar na
-   posteriori — geralmente é sair do modelo e diagnosticar.
+ $D_n = |\mu_0 - \bar x_n|/\sigma_0 > 3$, pare e pergunte por
+ quê. O modelo assumiu que tanto a priori quanto o modelo amostral
+ estavam bem especificados; se algum falha, a posteriori interpola
+ entre duas fontes erradas. A ação correta raramente é confiar na
+ posteriori — geralmente é sair do modelo e diagnosticar.
 
 O framework é curto por design. A inferência Bayesiana faz a
 matemática; o analista faz o julgamento.
@@ -834,16 +834,16 @@ intervalos auditáveis em forma fechada.
 Três ganhos operacionais seguem:
 
 - A **média ponderada por precisão** substitui reponderação ad-hoc
-  de plano vs realizados. Os pesos são funções de incertezas
-  declaradas, não de intuição.
+ de plano vs realizados. Os pesos são funções de incertezas
+ declaradas, não de intuição.
 - O **encolhimento monotônico** substitui afirmações vagas de que
-  "a previsão ficou mais apertada": $\sigma_n$ decai em exatamente
-  $1/\sqrt n$, com forma fechada para o limiar de participação dos
-  dados.
+ "a previsão ficou mais apertada": $\sigma_n$ decai em exatamente
+ $1/\sqrt n$, com forma fechada para o limiar de participação dos
+ dados.
 - A **preditiva a posteriori** responde $P(\text{total anual} > B)$
-  diretamente, contabilizando tanto incerteza do parâmetro quanto
-  ruído futuro — e incluindo a dependência muitas vezes esquecida
-  entre meses não observados que compartilham $\theta$.
+ diretamente, contabilizando tanto incerteza do parâmetro quanto
+ ruído futuro — e incluindo a dependência muitas vezes esquecida
+ entre meses não observados que compartilham $\theta$.
 
 O próximo artigo natural estende esse framework a **modelos
 hierárquicos**: pooling de informação entre centros de custo,
