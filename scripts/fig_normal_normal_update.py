@@ -29,7 +29,6 @@ from scipy import stats
 
 from src.conjugate import NormalNormalUpdater
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIG_PATH = REPO_ROOT / "figures" / "normal_normal_update.png"
 

@@ -35,7 +35,6 @@ from src.conjugate import (
     NormalPosterior,
 )
 
-
 ConjugateUpdater = (
     NormalNormalUpdater
     | GammaPoissonUpdater

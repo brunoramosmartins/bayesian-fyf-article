@@ -35,7 +35,6 @@ from src.updating import (
     normal_normal_shrinkage_weight,
 )
 
-
 # =============================================================================
 # Sequential = Batch theorem
 # =============================================================================
@@ -268,12 +267,12 @@ class TestShrinkageHelpers:
         # Table from notes/phase3-sequential-updating.md §2.3
         sigma0, sigma = 150_000, 80_000
         cases = {
-            1: 0.2213,
+            1: 0.2215,
             2: 0.1245,
             3: 0.0866,
-            6: 0.0452,
+            6: 0.0453,
             9: 0.0306,
-            12: 0.0231,
+            12: 0.0232,
         }
         for n, expected in cases.items():
             w = normal_normal_shrinkage_weight(sigma0, sigma, n)

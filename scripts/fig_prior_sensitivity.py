@@ -27,7 +27,6 @@ import numpy as np
 from src.conjugate import NormalNormalUpdater
 from src.updating import SequentialUpdater, normal_normal_shrinkage_weight
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIG_PATH = REPO_ROOT / "figures" / "prior_sensitivity.png"
 SEED = 20260602
