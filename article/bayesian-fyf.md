@@ -8,22 +8,17 @@ tags: bayesian, forecasting, conjugate-priors, budgeting
 
 # The Budget That Learns
 
-**Bayesian Forecasting for Periodic Budget Revisions — from Prior Beliefs to Posterior Certainty**
-
-> *A budget forecast that ignores its own history is a memoryless
-> estimator — it discards the information accumulated in previous
-> revisions and observed actuals. Bayesian updating provides the
-> mathematically optimal way to combine prior beliefs (the original
-> budget) with incoming evidence (monthly actuals): the posterior
-> forecast is always at least as good as the prior, it sharpens
-> monotonically as data arrives, and it automatically balances
-> confidence in the plan against confidence in the data through the
-> precision-weighted mean. **Each FYF cycle is not a new forecast —
-> it is a Bayesian update.***
+> **What this is.** A budget forecast that ignores its own history is a memoryless estimator — it discards the information accumulated in previous revisions and observed actuals. Bayesian updating provides the mathematically optimal way to combine prior beliefs (the original budget) with incoming evidence (monthly actuals): the posterior forecast is always at least as good as the prior, it sharpens monotonically as data arrives, and it automatically balances confidence in the plan against confidence in the data. **Each FYF cycle is not a new forecast — it is a Bayesian update.** The article's contribution is that closed-form conjugate updating is enough to explain and improve the whole revision cycle.
+>
+> **What you should know before reading.** *Required:* a solid undergraduate background — integration by substitution, completing the square, the Normal/LogNormal/Poisson distributions, the law of total variance, and Bayes' theorem in its discrete form. Every continuous result is derived from these in full. *Out of scope:* MCMC, hierarchical models, nonparametric Bayes, variational inference, and real company data.
+>
+> **What you will take away.** The four conjugate pairs that cover a budget model, the precision-weighted mean that replaces ad-hoc reweighting of plan vs actuals, the closed form for "what is the probability of ending the year over budget?", and the diagnostics that tell you when to stop trusting the machine.
+>
+> **Code.** Every figure and number is reproduced by versioned scripts with fixed seeds in the [companion repository](https://github.com/brunoramosmartins/bayesian-fyf-article).
 
 ---
 
-## 1. Introduction: The Forecast That Learns
+## The Forecast That Learns
 
 Every budget analyst lives the same calendar. December: a plan is
 approved. April, July, October, January-of-next-year: a Forecast
@@ -49,47 +44,32 @@ qualitative pain-points into closed-form results:
  weights are not a matter of judgement: they are functions of the
  stated prior uncertainty and the per-month observation noise.
 2. *How tight is my forecast?* — The posterior variance shrinks
- monotonically with each new month. Phase 3 will make this
- "monotonically" both rigorous and quantitative.
+ monotonically with each new month.
+ [Sequential Updating and Shrinkage](#sequential-updating-and-shrinkage)
+ makes this "monotonically" both rigorous and quantitative.
 3. *What is the probability of ending the year over budget?* — The
  posterior **predictive** distribution applied to the unobserved
  months gives an exact closed form, not a heuristic.
 
-The route from claim to proof is short. Section 2 derives Bayes'
-theorem for continuous parameters and clarifies the difference
-between credible intervals and confidence intervals. Section 3
-develops the four conjugate prior–likelihood pairs that cover the
-FYF cost model. Section 4 chains conjugate updates across the year
-and proves that sequential and batch updating produce identical
-posteriors. Section 5 layers the posterior predictive on top — what
-the CFO actually wants. Section 6 wires the machinery into a complete
-annual cycle of a 50-person IT-headcount budget. Section 7 runs the
-experiments. Section 8 supplies the diagnostics that decide when the
+The route from claim to proof is short.
+[Bayes' Theorem for Budget Analysts](#bayes-theorem-for-budget-analysts)
+derives the continuous theorem and clarifies the difference between
+credible and confidence intervals.
+[Conjugate Families](#conjugate-families) develops the four
+prior–likelihood pairs that cover the FYF cost model.
+[Sequential Updating and Shrinkage](#sequential-updating-and-shrinkage)
+chains conjugate updates across the year and proves that sequential and
+batch updating produce identical posteriors.
+[The Posterior Predictive](#the-posterior-predictive) layers on top what
+the CFO actually wants. [The FYF Model](#the-fyf-model) wires the
+machinery into a complete annual cycle of a 50-person IT-headcount
+budget; the [experiments](#experiments-and-results) validate it; and
+[Diagnostics](#diagnostics) supplies the checks that decide when the
 model is to be trusted and when its mechanical answer is misleading.
-Sections 9–11 connect to the series and close.
-
-### Scope and anti-scope
-
-The article covers Bayes' theorem for continuous parameters; the
-four conjugate pairs (Normal–Normal, Normal–Inverse-Gamma,
-Gamma–Poisson, Beta–Binomial); sequential updating and shrinkage
-asymptotics; posterior predictive distributions and the year-end
-total; prior sensitivity; model checking via posterior predictive
-checks. It deliberately does **not** cover MCMC, hierarchical models,
-nonparametric Bayes, variational inference, or real company data.
-The article's contribution is that **closed-form Bayesian updating
-is enough** to explain and improve the FYF cycle.
-
-### What the reader will need
-
-A solid undergraduate background: integration by substitution,
-completing the square, the Normal/LogNormal/Poisson distributions,
-the law of total variance. Bayes' theorem in its discrete form.
-Every continuous result is derived from these in full.
 
 ---
 
-## 2. Bayes' Theorem for Budget Analysts
+## Bayes' Theorem for Budget Analysts
 
 Let $X$ denote observed data and $\theta$ an unknown parameter,
 both treated as random variables. The **product rule for densities**
@@ -119,7 +99,7 @@ $\pi(\theta \mid x)$ is the **posterior**: the revised forecast.
 
 Because $f(x)$ does not involve $\theta$, the proportional form
 $\pi(\theta \mid x) \propto f(x \mid \theta) \pi(\theta)$ is
-operationally enough. In conjugate families (§3) we recognise the
+operationally enough. In conjugate families we recognise the
 kernel of the right-hand side as that of a known distribution and
 read off the hyperparameters; the marginal likelihood is implied by
 the family and never has to be integrated.
@@ -182,17 +162,18 @@ uncertainty, translated into a prior in one line.
 
 ---
 
-## 3. Conjugate Families: Closed-Form Updating
+## Conjugate Families
 
 A family $\mathcal F$ of priors is **conjugate** to a sampling model
 if the posterior obtained by Bayes' theorem stays in $\mathcal F$.
 Hyperparameters update by an explicit rule; the marginal likelihood
-is implied; sequential updating becomes addition (§4). The four
+is implied; sequential updating becomes addition, as the
+[next section](#sequential-updating-and-shrinkage) shows. The four
 pairs in this section cover every component of the FYF cost model.
 
 ![Experiment B — four conjugate pairs side by side. Each panel: prior in steelblue, posterior in crimson after a small batch of synthetic data.](../figures/exp_b_conjugate_families.png)
 
-### 3.1 Normal–Normal (known variance) — the article's anchor
+### Normal–Normal (known variance) — the article's anchor
 
 Let $\theta$ be the unknown mean of a Normal sampling model with
 **known** variance $\sigma^2$:
@@ -243,7 +224,7 @@ source — prior information $\tau_0$, data information $n\tau$.
 **Shrinkage to the prior.** Equivalently, $\mu_n = \bar x + w_0(\mu_0 - \bar x)$:
 the data mean is shrunk toward the prior mean by a factor $w_0$.
 
-### 3.2 Normal–Inverse-Gamma (unknown variance)
+### Normal–Inverse-Gamma (unknown variance)
 
 When $\sigma^2$ is also unknown, the conjugate prior is the
 **Normal–Inverse-Gamma**:
@@ -269,7 +250,7 @@ degrees of freedom; the marginal of $\sigma^2$ is
 Inverse-Gamma$(\alpha_n, \beta_n)$. As $n \to \infty$ the posterior
 concentrates on $(\bar x, S/n) \to (\theta_\star, \sigma_\star^2)$.
 
-### 3.3 Gamma–Poisson — updating event rates
+### Gamma–Poisson: updating event rates
 
 For monthly incident counts modelled as
 $x_i \mid \lambda \sim \text{Poisson}(\lambda)$ with prior
@@ -286,7 +267,7 @@ The interpretation is **pseudo-observations**: $\alpha_0$ acts as
 "prior event count", $\beta_0$ as "prior pseudo-observation period".
 Real events and real periods simply add.
 
-### 3.4 Beta–Binomial — updating proportions
+### Beta–Binomial: updating proportions
 
 For an overtime proportion $p$ with prior $\text{Beta}(\alpha_0, \beta_0)$
 and observation $x \mid p \sim \text{Binomial}(n, p)$,
@@ -300,7 +281,7 @@ $$
 The pattern repeats: $\alpha_0$ are prior successes, $\beta_0$ prior
 failures, real data adds.
 
-### 3.5 The pattern
+### The pattern
 
 All four pairs share the same shape: the prior contributes a finite
 "imaginary" sample, the data contributes a real sample, and the
@@ -309,9 +290,9 @@ algebraic foundation for everything that follows.
 
 ---
 
-## 4. Sequential Updating and Shrinkage
+## Sequential Updating and Shrinkage
 
-### 4.1 Sequential = batch
+### Sequential = batch
 
 The FYF cycle feeds data **one month at a time**. Does the result
 agree with what the analyst would obtain by waiting until December
@@ -335,7 +316,7 @@ who saves the previous posterior and applies the conjugate rule
 month by month will, by year-end, hold exactly the posterior they
 would have obtained had they waited and done one big update.
 
-### 4.2 The shrinkage formula and three consequences
+### The shrinkage formula and three consequences
 
 The Normal–Normal posterior mean is the convex combination
 
@@ -370,7 +351,7 @@ static parameter.
 
 ![Experiment C — sequential shrinkage. Left: posterior trajectory and 95 % credible band over 12 months. Right: the closed-form prior weight $w_0(n)$ decaying toward zero, with markers at the 80 % and 95 % data-weight thresholds.](../figures/exp_c_sequential_shrinkage.png)
 
-### 4.3 FYF reading: when does the data dominate?
+### When does the data dominate?
 
 With reference parameters $\sigma_0 = 150{,}000$, $\sigma = 80{,}000$,
 the ratio $\sigma^2/\sigma_0^2 \approx 0.2844$:
@@ -387,7 +368,7 @@ with monthly revisions), **95 % at $n = 6$** (mid-year FYF). By the
 year-end posterior, the budget plan accounts for ≈ 2.3 % of the
 answer.
 
-### 4.4 Prior sensitivity
+### Prior sensitivity
 
 Two analysts with the same $\sigma_0$ but different prior means
 $\mu_0^{(A)} \ne \mu_0^{(B)}$ produce posteriors whose disagreement
@@ -402,7 +383,7 @@ By year-end, to ≈ R\$ 3{,}460. The data forces consensus.
 
 ![Experiment D — three priors converging under the same data. The right panel plots the gap on a log scale against the closed-form prediction $w_0(n) \cdot \Delta\mu_0$.](../figures/exp_d_prior_sensitivity.png)
 
-### 4.5 Prior–data conflict
+### Prior–data conflict
 
 Define the discrepancy $D_n = |\mu_0 - \bar x_n|/\sigma_0$. When
 $D_n \gg 3$ — the data is "far from" the prior, in prior units —
@@ -418,14 +399,14 @@ machine answers; the analyst owns the interpretation.
 
 ---
 
-## 5. Posterior Predictive: Forecasting, Not Estimating
+## The Posterior Predictive
 
 The posterior $\pi(\theta \mid x)$ is a means; the posterior
 **predictive** $p(\tilde x \mid x)$ is the end. The predictive is
 what the business wants: not "what is the mean cost?" but "what
 will next month cost? what will the year-end total cost?".
 
-### 5.1 Definition and decomposition
+### Definition and decomposition
 
 $$
 \boxed{\quad
@@ -452,7 +433,7 @@ under-state the uncertainty about future observations.
 
 ![Experiment A — single Normal-Normal update with the precision-weighted-mean decomposition. The credible interval for $\theta$ (steelblue band) is narrower than the predictive interval for the next observation (crimson band).](../figures/exp_a_prior_to_posterior.png)
 
-### 5.2 Closed forms
+### Closed forms
 
 For the three pairs the article uses operationally:
 
@@ -464,7 +445,7 @@ For the three pairs the article uses operationally:
 - **Beta–Binomial**: future batch of size $m$ has predictive PMF
  $\Pr(\tilde x = k) = \binom{m}{k} B(\alpha_n + k, \beta_n + m - k)/B(\alpha_n, \beta_n)$.
 
-### 5.3 The year-end total — beware of independence
+### The year-end total — beware of independence
 
 After observing $m$ months with cumulative $S_m$, the remaining
 total $\tilde S = \sum_{t=m+1}^{12} \tilde x_t$ is **not** the sum
@@ -505,7 +486,7 @@ $P(T > B) \approx 26\%$ under the correct formula, vs ≈ 20 % under
 the naïve iid calculation. **The dependence between future months
 is not a rounding error.**
 
-### 5.4 Connection to Article 1 — Monte Carlo posterior predictive
+### Monte Carlo posterior predictive
 
 The closed forms are convenient, but the Monte Carlo recipe works
 in any setting:
@@ -513,12 +494,16 @@ in any setting:
 1. Draw $\theta^{(s)} \sim \pi(\theta \mid x)$.
 2. Draw $\tilde x^{(s)} \sim f( \cdot \mid \theta^{(s)})$.
 
-This is exactly the Article-1 strategy applied to the posterior.
-Crucially, for multi-period sums **reuse the same $\theta^{(s)}$
-across all future months in a replication** — that is what
-preserves the correlation that produces the quadratic variance term.
+This is exactly the simulation strategy of the companion article
+[Why Your Budget Never Hits the Exact Number](monte-carlo-budget.html),
+applied to the posterior. That article sampled from the prior; this
+one samples from the posterior, which is the prior updated with
+observed months. Same machine, better input. Crucially, for
+multi-period sums **reuse the same $\theta^{(s)}$ across all future
+months in a replication** — that is what preserves the correlation
+that produces the quadratic variance term.
 
-### 5.5 Bayes factors (brief)
+### Bayes factors (brief)
 
 For two competing models $M_1, M_2$ the **Bayes factor** is
 $BF_{12} = p(x \mid M_1)/p(x \mid M_2)$, the ratio of marginal
@@ -527,14 +512,16 @@ posterior model odds. Under Jeffreys' scale,
 $\log_{10} BF \in [1, 1.5]$ is "strong", $> 2$ is "decisive". In
 large samples $\log BF \approx -\tfrac{1}{2}(\Delta\text{BIC})$,
 linking the Bayes factor to BIC and (approximately) AIC. We use the
-Bayes factor as a conceptually cleaner comparator to Article 2's
-AIC/BIC; we do not use it as the article's primary inference tool.
+Bayes factor as a conceptually cleaner comparator to the AIC/BIC
+machinery of the companion article
+[The Shape of What You'll Spend](probabilistic-cost-modelling.html);
+we do not use it as the article's primary inference tool.
 
 ---
 
-## 6. The FYF Model: A Complete Annual Cycle
+## The FYF Model
 
-### 6.1 The cost decomposition
+### The cost decomposition
 
 Monthly cost decomposes into three components — salary plus
 benefits, overtime, and incidents:
@@ -548,12 +535,13 @@ $$
 For the article's central inference layer, $\theta$ is the **mean
 monthly cost** with $X_t \mid \theta \sim N(\theta, \sigma^2)$ and
 $\sigma$ known. The Gamma–Poisson incident-count and Beta–Binomial
-overtime-proportion priors developed in §3 cover the other two
+overtime-proportion priors developed in
+[Conjugate Families](#conjugate-families) cover the other two
 components and slot into the same machine; we keep the canonical
 scenarios in this section single-component to isolate the Bayesian
 mechanics.
 
-### 6.2 The revision calendar
+### The revision calendar
 
 | Month | Event | Bayesian analogue |
 |---------------------|--------------------------------|----------------------------------------|
@@ -568,11 +556,12 @@ mechanics.
 | Jan (year N+1) | Year-end close | Posterior #4 |
 
 Each FYF is a posterior. The previous posterior becomes the next
-prior. By the sequential = batch theorem (§4), the year-end
-posterior equals the single batch posterior conditioned on all 12
-actuals.
+prior. By the
+[sequential = batch theorem](#sequential-updating-and-shrinkage), the
+year-end posterior equals the single batch posterior conditioned on
+all 12 actuals.
 
-### 6.3 Reference parameters
+### Reference parameters
 
 A 50-person IT team, average gross monthly salary R\$ 12{,}000,
 benefit-and-charge multiplier 1.75:
@@ -586,7 +575,7 @@ benefit-and-charge multiplier 1.75:
 | Incident-rate prior | $\text{Gamma}(3, 1)$ | Prior expectation 3 incidents/month. |
 | Overtime-proportion prior | $\text{Beta}(2, 8)$ | Prior expectation 20 %. |
 
-### 6.4 The FYF model object
+### The FYF model object
 
 Operationally we package the engine as a stateful object that, for
 each incoming month, (i) computes the surprise z-score before
@@ -598,20 +587,20 @@ absolute surprise in the quarter, and a one-line recommendation
 ("hold", "re-elicit", "investigate shock", "request budget
 revision").
 
-### 6.5 The annual cycle, end to end
+### The annual cycle, end to end
 
-Figure 6 shows a full simulation of the **on-target scenario**:
-12 monthly actuals drawn from $N(\theta_\star = 1{,}080{,}000, \sigma)$
-(so the true mean is slightly above the planner's expectation).
-The top panel walks the posterior: a steep correction in Q1, then
-month-by-month tightening. The bottom panel walks the year-end
-forecast: the predictive interval narrows from
-$\pm \approx$ R\$ 950,000 at month 1 to $\pm \approx$ R\$ 50,000
-at month 11.
+The figure below shows a full simulation of the **on-target
+scenario**: 12 monthly actuals drawn from
+$N(\theta_\star = 1{,}080{,}000, \sigma)$ (so the true mean is
+slightly above the planner's expectation). The top panel walks the
+posterior: a steep correction in Q1, then month-by-month tightening.
+The bottom panel walks the year-end forecast: the predictive interval
+narrows from $\pm \approx$ R\$ 950,000 at month 1 to
+$\pm \approx$ R\$ 50,000 at month 11.
 
 ![Experiment E — full annual FYF cycle. Top: posterior trajectory with a 95 % credible band, monthly actuals as grey dots, and quarterly FYF review boxes. Bottom: year-end total predictive vs the budget ceiling.](../figures/exp_e_fyf_quarterly.png)
 
-### 6.6 Key questions the model answers
+### Key questions the model answers
 
 Five practical questions, each mapping cleanly onto a Bayesian
 quantity:
@@ -621,83 +610,107 @@ quantity:
 2. **Precision**: how tight is the 95 % credible interval at each
  FYF? — $\pm 1.96\sigma_n$.
 3. **Surprise detection**: when should we override the update? —
- The surprise z-score (§8).
+ The surprise z-score of [Diagnostics](#diagnostics).
 4. **Prior sensitivity**: how much does the prior choice matter
  after 6 months? — The shrinkage of the prior gap by $w_0(n)$.
-5. **Predictive accuracy**: what is $P(T > B)$? — The closed form
- in §5.3.
+5. **Predictive accuracy**: what is $P(T > B)$? — The
+ [year-end closed form](#the-year-end-total-beware-of-independence).
 
 ---
 
-## 7. Experiments and Results
+## Experiments and Results
 
 We run eight experiments end-to-end and one animated companion. Each
 script is in `scripts/`; each figure is at 300 DPI with a fixed
-seed.
+seed. The table indexes all eight; the three that carry the article's
+sharpest claims then get the full **Claim / Setup / Result /
+Connection** treatment.
 
 | ID | Topic | Headline |
 |----|-----------------------------|-----------------------------------------------------------------|
-| A | Prior to posterior | A single update visualised end to end. |
-| B | Four conjugate families | One update rule, four distributional families (figure in §3). |
-| C | Sequential shrinkage | Posterior tightens monotonically; $w_0(n) \to 0$ at rate $1/n$. |
-| D | Prior sensitivity | Three priors converge by Q3; gap decays at $w_0(n)$. |
-| E | Full FYF quarterly cycle | Annual cycle with quarterly review boxes (figure in §6). |
+| A | Prior to posterior | A single update visualised end to end (figure in [The Posterior Predictive](#the-posterior-predictive)). |
+| B | Four conjugate families | One update rule, four families (figure in [Conjugate Families](#conjugate-families)). |
+| C | Sequential shrinkage | Posterior tightens monotonically; $w_0(n) \to 0$ at rate $1/n$ (figure in [Sequential Updating](#sequential-updating-and-shrinkage)). |
+| D | Prior sensitivity | Three priors converge by Q3; gap decays at $w_0(n)$ (figure in [Sequential Updating](#sequential-updating-and-shrinkage)). |
+| E | Full FYF quarterly cycle | Annual cycle with quarterly review boxes (figure in [The FYF Model](#the-fyf-model)). |
 | F | Bayesian vs frequentist | 100 frequentist CIs (~5 % miss) vs a single credible interval. |
 | G | Bayes factor vs AIC | Both converge; Bayes factor sits on the Jeffreys scale. |
-| H | Posterior predictive check | Calibration plot, z-score histogram, p-value CDF (§8). |
+| H | Posterior predictive check | Calibration plot, z-score histogram, p-value CDF. |
 
-Three experiments deserve a paragraph here.
+### Experiment F — Bayesian vs frequentist
 
-**F — Bayesian vs frequentist.** Experiment F draws 100 simulated
-samples of size $n = 30$ from $N(\theta_\star, \sigma^2)$. For each
-sample we compute the frequentist 95 % CI; the empirical coverage
-sits within Monte Carlo error of the nominal 95 %. Approximately
-five intervals miss the truth — the procedure-level guarantee. The
-bottom panel takes one of the samples and plots the corresponding
-Bayesian credible interval. The numerical values nearly coincide
-with the frequentist interval (which is the point Phase 2 §2.7
-makes formally — the improper-prior Bayesian recovers the
-frequentist sampling distribution), but the *statements* differ:
-the credible interval is a probability claim about $\theta$ given
-this dataset, the confidence interval a frequency claim about the
-procedure across replications. For a budget committee asking about
-*this year*, the Bayesian statement is the operational one.
+**Claim.** The frequentist coverage guarantee is about the procedure;
+the credible interval is about *this* forecast — and for a budget
+committee, the second is the operational statement.
+
+**Setup.** 100 simulated samples of size $n = 30$ from
+$N(\theta_\star, \sigma^2)$; the frequentist 95 % CI computed for
+each; one sample additionally analysed with the Bayesian machinery.
+
+**Result.** Empirical coverage sits within Monte Carlo error of the
+nominal 95 % — approximately five intervals miss the truth, the
+procedure-level guarantee. The credible interval on the highlighted
+sample nearly coincides numerically with the frequentist interval
+(formally: the improper-prior Bayesian recovers the frequentist
+sampling distribution), but the *statements* differ: probability
+about $\theta$ given this dataset vs frequency across hypothetical
+repetitions.
+
+**Connection.** The credible-vs-confidence distinction drawn in
+[Bayes' Theorem for Budget Analysts](#bayes-theorem-for-budget-analysts),
+made visual.
 
 ![Experiment F — frequentist coverage simulation (top) vs a single Bayesian credible interval (bottom).](../figures/exp_f_bayesian_vs_frequentist.png)
 
-**G — Bayes factors and AIC.** Experiment G simulates data from a
-prior centred at the truth and compares it against an alternative
-prior that is 5 prior standard deviations off. The log marginal
-likelihood under each prior is computed in closed form (Phase 4 §7);
-the Bayes factor in favour of the right prior crosses the
+### Experiment G — Bayes factors and AIC
+
+**Claim.** With even a few months of data, the Bayes factor
+decisively separates a well-centred prior from a badly-centred one.
+
+**Setup.** Data simulated from a prior centred at the truth; compared
+against an alternative prior 5 prior standard deviations off. Log
+marginal likelihoods computed in closed form; AIC computed under the
+same identification.
+
+**Result.** The Bayes factor in favour of the right prior crosses the
 "decisive" threshold on Jeffreys' scale by about $n = 6$ and grows
-exponentially thereafter. AIC, under the same identification, agrees
-on direction.
+exponentially thereafter. AIC agrees on direction.
+
+**Connection.** The [Bayes-factor comparator](#bayes-factors-brief)
+in action, and the bridge to the model-selection machinery of
+[The Shape of What You'll Spend](probabilistic-cost-modelling.html).
 
 ![Experiment G — log marginal likelihoods, Bayes factor trajectory, and Jeffreys-scale interpretation.](../figures/exp_g_model_comparison.png)
 
-**H — posterior predictive check.** Experiment H runs 250 simulated
-annual cycles. For each, a true $\theta$ is drawn from the prior;
-12 actuals are drawn from $N(\theta, \sigma^2)$; the model is fed
-those actuals and produces predictive intervals. Aggregating across
-replications, we recover (i) a calibration plot that lies on the
-diagonal (empirical coverage matches nominal), (ii) a histogram of
-surprise z-scores that is approximately $N(0, 1)$, and (iii) a CDF
-of two-sided predictive p-values that is approximately Uniform.
-These three checks are the model's self-test: deviations indicate
-mis-specification, not random Monte Carlo wiggle.
+### Experiment H — Posterior predictive check
+
+**Claim.** Under correct specification, the model's own predictions
+are calibrated — and the calibration triple is a usable self-test.
+
+**Setup.** 250 simulated annual cycles: for each, a true $\theta$
+drawn from the prior, 12 actuals drawn from $N(\theta, \sigma^2)$,
+the model fed those actuals and its predictive intervals recorded.
+
+**Result.** Aggregated across replications: (i) the calibration plot
+lies on the diagonal (empirical coverage matches nominal), (ii) the
+histogram of surprise z-scores is approximately $N(0, 1)$, (iii) the
+CDF of two-sided predictive p-values is approximately Uniform.
+Deviations indicate mis-specification, not random Monte Carlo wiggle.
+
+**Connection.** Validates every check used operationally in
+[Diagnostics](#diagnostics).
 
 ![Experiment H — calibration plot (left), z-score histogram (centre), p-value CDF (right). Aggregated over 250 simulated cycles.](../figures/exp_h_posterior_predictive_check.png)
 
 ---
 
-## 8. Diagnostics: Is the Model Working?
+## Diagnostics
 
 A Bayesian model is only as good as its assumptions. The diagnostic
 layer answers a single question: when should we stop trusting the
 output?
 
-### 8.1 The surprise z-score
+### The surprise z-score
 
 The standardised innovation under the posterior predictive is
 
@@ -711,7 +724,7 @@ is "investigate". The $z$ scores are not iid in finite samples —
 the previous posterior is itself random — but they are exchangeable
 under correct specification, which is enough for routine practice.
 
-### 8.2 Calibration
+### Calibration
 
 A 95 % equal-tailed predictive interval should contain the next
 actual approximately 95 % of the time. Aggregating across $T$
@@ -724,14 +737,14 @@ sampling-noise term $\sigma$ is too small. Over-coverage indicates
 $\sigma$ is too large. Persistent miscalibration that *changes with
 $n$* points instead at the prior — too tight or too loose.
 
-### 8.3 Cumulative surprise
+### Cumulative surprise
 
 $S_n = \sum_{t \le n} z_t$ is, under correct specification, a
 random walk with mean zero and variance growing linearly in $n$.
 A sustained drift of $S_n / \sqrt n$ outside $[-2, 2]$ flags
 **structural drift** — the sampling model has gone stale.
 
-### 8.4 When the diagnostic fires
+### When the diagnostic fires
 
 The article's operational rule:
 
@@ -747,40 +760,41 @@ when to stop trusting the conjugate update and start asking why.
 
 ---
 
-## 9. Connection to the Series
+## Connection to the Series
 
-This is article 4 of a four-part series on probabilistic methods
-for budget analytics. Each prior article supplies a building block
-that this article uses or extends.
+This is the fourth article in a series on probabilistic methods for
+budget analytics. Each earlier article supplies a building block that
+this one uses or extends.
 
-- **Article 1 — Monte Carlo budget.** The Article-1 simulation
- strategy reappears in §5.4 as posterior predictive sampling. The
- only change is the *input* distribution: Article 1 sampled from
- the prior; this article samples from the posterior, which is
- the prior updated with observed months. Same machine, better
- input.
-- **Article 2 — Distributions.** The four conjugate prior
- distributions in §3 — Normal, Inverse-Gamma, Gamma, Beta — are
- exactly the families fitted in Article 2. The likelihood
- building blocks (Normal, Poisson, Binomial) are also from
- Article 2. This article uses Article 2's MLE / AIC / BIC machinery
- as a comparator in §5.5 and Experiment G.
-- **Article 3 — Headcount Markov chains.** Article 3 modelled the
- evolution of $n_t$ — team size — via a birth-death chain. Plugged
- into the §6.1 cost decomposition $X_t = n_t \bar S_t \beta + \cdots$,
- it allows $n_t$ to drift over the year. The Article-3 transition
- rates feed the headcount portion; the Bayesian inference layer in
- this article infers the *cost-per-head times benefit multiplier*
- given $n_t$.
+- **[Why Your Budget Never Hits the Exact Number](monte-carlo-budget.html).**
+ Its simulation strategy reappears here as the
+ [Monte Carlo posterior predictive](#monte-carlo-posterior-predictive).
+ The only change is the *input* distribution: that article sampled
+ from the prior; this one samples from the posterior, which is the
+ prior updated with observed months. Same machine, better input.
+- **[The Shape of What You'll Spend](probabilistic-cost-modelling.html).**
+ The four conjugate prior distributions — Normal, Inverse-Gamma,
+ Gamma, Beta — are exactly the families fitted there, and the
+ likelihood building blocks (Normal, Poisson, Binomial) come from
+ the same catalogue. Its MLE / AIC / BIC machinery appears here as
+ the comparator in [Bayes factors](#bayes-factors-brief) and
+ Experiment G.
+- **[The Team That Replaces Itself](headcount-dynamics.html).**
+ That article modelled the evolution of $n_t$ — team size — via a
+ birth-death chain. Plugged into
+ [the cost decomposition](#the-cost-decomposition)
+ $X_t = n_t \bar S_t \beta + \cdots$, it allows $n_t$ to drift over
+ the year: its transition rates feed the headcount portion, while
+ the Bayesian layer here infers the cost-per-head given $n_t$.
 
 Together the four articles cover a single problem from four sides:
-how to *simulate* it (Article 1), how to *fit* its components
-(Article 2), how its *components evolve* (Article 3), how to *learn
-from incoming data* (this article).
+how to *simulate* it, how to *fit* its components, how its
+*components evolve*, and — this article — how to *learn from
+incoming data*.
 
 ---
 
-## 10. A Practical Framework for Budget Analysts
+## A Practical Framework
 
 A short checklist, derived from the article's central results.
 
@@ -795,8 +809,9 @@ A short checklist, derived from the article's central results.
 3. **Report the predictive, not the posterior, for forward-looking
  questions.** Internal "what is our best estimate of the mean?"
  uses the credible interval. External "will we exceed the
- budget?" uses the predictive: $P(T > B)$ via the year-end
- formula in §5.3, with the **correct** quadratic-horizon variance.
+ budget?" uses the predictive: $P(T > B)$ via the
+ [year-end formula](#the-year-end-total-beware-of-independence),
+ with the **correct** quadratic-horizon variance.
 4. **Run the diagnostic at every quarterly review.** Compute the
  surprise z-scores for the months of the quarter, the calibration
  score on the year-to-date, and the cumulative surprise.
@@ -815,7 +830,42 @@ the analyst does the judgement.
 
 ---
 
-## 11. Conclusion
+## Limitations
+
+The closed forms are the article's selling point — and its boundary.
+
+**Known observation noise.** The central Normal–Normal layer treats
+$\sigma$ as known. In practice it is estimated from history, and
+underestimating it makes every posterior overconfident. The
+Normal–Inverse-Gamma extension handles unknown variance at the cost
+of Student-$t$ predictives; the diagnostics exist precisely to catch
+a mis-set $\sigma$.
+
+**Exchangeable months.** The sampling model treats monthly actuals as
+iid draws around $\theta$. Seasonality, one-off events booked to a
+single month, and within-year trends violate this; the cumulative
+surprise statistic detects the drift but the model itself cannot
+represent it.
+
+**Correct specification is assumed, not tested by the update.** The
+conjugate machine always returns a number. Under prior–data conflict
+($D_n > 3$) that number interpolates between two wrong sources — the
+framework's own advice is to stop and step outside the model.
+
+**Conjugate-only scope.** No MCMC, no hierarchical pooling across
+cost centres, no nonparametrics. The single-team, single-parameter
+scenarios isolate the mechanics; a portfolio of teams sharing
+information requires the hierarchical extension deferred to future
+work.
+
+**Synthetic data.** All experiments use simulated actuals with known
+ground truth — the right tool for validating the machinery, but real
+FYF data brings reporting lags, accrual adjustments, and re-orgs
+that the clean model does not see.
+
+---
+
+## Conclusion
 
 A budget forecast that ignores its own history is a memoryless
 estimator. Bayesian updating is the corrective: it combines the
@@ -852,27 +902,22 @@ that observation into a tool.
 
 ## References
 
-### Core textbooks
-
+- Berger, J. (1985). *Statistical Decision Theory and Bayesian Analysis*. Springer.
+- DeGroot, M. (1970). *Optimal Statistical Decisions*. McGraw-Hill.
 - Gelman, A. et al. (2013). *Bayesian Data Analysis*, 3rd ed. CRC Press.
 - Hoff, P. (2009). *A First Course in Bayesian Statistical Methods*. Springer.
-- DeGroot, M. (1970). *Optimal Statistical Decisions*. McGraw-Hill.
-
-### Supplementary
-
-- Berger, J. (1985). *Statistical Decision Theory and Bayesian Analysis*. Springer.
-- Robert, C. (2007). *The Bayesian Choice*. Springer.
-- Murphy, K. (2012). *Machine Learning: A Probabilistic Perspective*. MIT Press.
 - Kass, R. E. & Raftery, A. E. (1995). "Bayes factors". *J. Amer. Statist. Assoc.* 90, 773–795.
-- Stein, C. (1956). "Inadmissibility of the usual estimator for the mean of a multivariate normal distribution". *Proc. Third Berkeley Symp.* (James-Stein reference).
+- Murphy, K. (2012). *Machine Learning: A Probabilistic Perspective*. MIT Press.
+- Robert, C. (2007). *The Bayesian Choice*. Springer.
+- Stein, C. (1956). "Inadmissibility of the usual estimator for the mean of a multivariate normal distribution". *Proc. Third Berkeley Symp.*
 - West, M. & Harrison, J. (1997). *Bayesian Forecasting and Dynamic Models*. Springer.
 
-### Companion repository
+---
 
-The code, tests, and reproducible figures live at
-`https://github.com/brunoramosmartins/bayesian-fyf-article`. Every
-script in `scripts/` has a fixed seed and a one-line description.
+*All figures and numbers in this article are reproduced by versioned
+scripts with fixed seeds in the
+[companion repository](https://github.com/brunoramosmartins/bayesian-fyf-article).
 The conjugate updaters (`src/conjugate.py`), sequential engine
 (`src/updating.py`), predictive (`src/predictive.py`), FYF model
 (`src/fyf_model.py`), and diagnostics (`src/diagnostics.py`) are
-documented and unit-tested.
+documented and unit-tested.*
