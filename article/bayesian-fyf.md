@@ -1,3 +1,11 @@
+---
+title: "The Budget That Learns"
+description: "Bayesian forecasting for periodic budget revisions — from prior beliefs to posterior certainty."
+date: 2026-07-11
+category: statistics
+tags: bayesian, forecasting, conjugate-priors, budgeting
+---
+
 # The Budget That Learns
 
 **Bayesian Forecasting for Periodic Budget Revisions — from Prior Beliefs to Posterior Certainty**
